@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: springboot_test
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: defaultDatasource
+    username: root
+    password: bbbbbb
+    url: jdbc:mysql://localhost:3306/carinsurance?useSSL=false&useUnicode=true&characterEncoding=UTF-8&&serverTimezone=Hongkong
+  web:
+    resources:
+      static-locations: classpath:/templates/,classpath:/static/
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: UTF-8
+    excluded-view-names:
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+
+
+
+server:
+  port: 8080
