@@ -18,8 +18,37 @@ spring:
     mode: HTML5
     prefix: classpath:/templates/
     suffix: .html
-
-
+  redis:
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 16
+        max-active: 32
+        max-wait: 100
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 18000
+    password:
+  profiles:
+    active: local
+  mail:
+    host: smtp.qq.com
+    username: 1334392695@qq.com
+    password: xmpypxhkxewxgdfi
+    port: 587
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: false
+            require: false
+          debug: true
 
 server:
-  port: 8080
+  port: 8081
+
+mybatis:
+  mapper-locations: classpath:mapper/*xml
+  type-aliases-package: com.example.demo.domain
