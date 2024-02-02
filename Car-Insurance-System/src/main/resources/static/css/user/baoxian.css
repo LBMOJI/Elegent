@@ -1,0 +1,126 @@
+@charset "utf-8";
+img{
+    vertical-align: middle;
+}
+.baoXian{
+    border-top: 1px sandybrown solid;
+    width: 1280px;
+    height: 550px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+.baoXian .baoXianView1,.baoXian .baoXianView2,.baoXian .baoXianView3,.baoXian .baoXianView4,.baoXian .baoXianView5,.baoXian .baoXianView6,.baoXian .baoXianView7,.baoXian .baoXianView8{
+    height: 300px;
+    width: 960px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 20px auto;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 0 5px 1px #999;
+}
+.baoXian .baoXianView1{
+    display: block;
+}
+.baoXian .baoXianView2,.baoXian .baoXianView3,.baoXian .baoXianView4,.baoXian .baoXianView5,.baoXian .baoXianView6,.baoXian .baoXianView7,.baoXian .baoXianView8{
+    display: none;
+}
+.buyBx{
+    display: none;
+    width: 960px;
+    height: 300px;
+    margin: auto;
+}
+
+.baoXian .baoXianMenu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 1280px;
+    height: 60px;
+}
+.baoXian .baoXianMenu li{
+    width: 160px;
+    height: 60px;
+    text-align: center;
+    float: left;
+}
+.baoXian .baoXianMenu li a{
+    line-height: 60px;
+    font-size: 18px;
+}
+.detail{
+    position: absolute;
+    height: 240px;
+}
+.detail .bxDetail{
+    width: 700px;
+    float: left;
+    padding-top: 60px;
+    padding-left: 20px;
+}
+.detail .bxBtn{
+    width: 240px;
+    height: 240px;
+    float: left;
+    text-align: center;
+}
+.buyBx .form-input {
+    border: 0;
+    outline: none;
+    pointer-events: none;
+    font-size: 18px;
+    text-align: center;
+    width: 170px;
+    height: 24px;
+}
+
+.buyBx .form_detail {
+    pointer-events: none;
+    height: 58px;
+    font-family: sans-serif;
+    resize: none;
+}
+
+.form-item-detail {
+    width: 480px;
+    height: 58px;
+    margin: 10px auto;
+}
+.form-item-detail textarea{
+    width: 480px;
+}
+
+.form-item {
+    width: 170px;
+    height: 24px;
+    margin: 10px auto;
+}
+
+button{
+    width: 40%;
+    height: 40px;
+    cursor: pointer;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    margin: 5px 10px;
+    color: #ffffff;
+    background-color: sandybrown;
+}
+#form-item-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+.tips{
+    font-size: 8px;
+    color: red;
+    display: block;
+    text-align: center;
+    height: 12px;
+}

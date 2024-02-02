@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/admin/adminPublic.css">
+    <style>
+        #overlay {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        .popup {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 430px;
+            border-radius: 5px;
+            margin: 130px auto;
+            text-align: center;
+        }
+
+        .popup_title {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+            font-size: 18px;
+        }
+
+        .popup_content {
+            line-height: 40px;
+            padding: 15px 20px;
+        }
+
+        .popup_btn {
+            padding-bottom: 10px;
+        }
+
+        .popup_btn button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+
+        .overlay1, .overlay2 {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            /* IE9以下不支持rgba模式 */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* 兼容IE8及以下 */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        /* 弹出框主体 */
+        .popup1 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 240px;
+            border-radius: 5px;
+            margin: 160px auto;
+            text-align: center;
+        }
+
+        .popup2 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 450px;
+            border-radius: 5px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        /* 弹出框的标题 */
+        .popup_title1, .popup_title2 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+        }
+
+        /* 弹出框的内容 */
+        .popup_content1 {
+            height: 60px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+
+        .popup_content2 {
+            height: 280px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+
+        .popup_content2 input {
+            font-size: 16px;
+        }
+
+        /* 弹出框的按钮栏 */
+        .popup_btn1, .popup_btn2 {
+            padding-bottom: 10px;
+        }
+
+        /* 弹出框的按钮 */
+        .popup_btn1 button, .popup_btn2 button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+
+        .normalTh, .normalTd {
+            width: 160px;
+        }
+
+        .longTd, .longTh {
+            width: 200px;
+        }
+
+        td {
+            height: 80px;
+            font-size: 15px;
+        }
+
+        th {
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>后台业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li>
+            <a href="javascript:void(0);" class="one">数据统计</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getDataPicture}">数据图表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">用户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getUserList}">用户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">保险管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getBaoxianList}">保险列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">订单管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getRecordList}">订单列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getAcceptionList}">理赔列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one" id="now">车辆管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getCarList}">审核列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">业务员管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getSalerList}">业务员列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/myself}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="content-head">
+        <div class="welcome">
+            <span>欢迎：</span>
+            <span th:text="${session.admin.getUsername()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/admin/logout}">退出</a>
+        </div>
+    </div>
+    <div class="content-banner">
+        <div class="banner-name">
+            <span>车辆列表</span>
+        </div>
+        <div class="banner-right">
+            <div class="banner-search">
+                <span>搜索：</span>
+                <input type="text" id="cph" autocomplete="off" placeholder="请输入车牌号">
+            </div>
+            <div class="banner-add">
+                <select name="status" id="statusSelect">
+                    <option value="全部">全部</option>
+                    <option value="审核中">审核中</option>
+                    <option value="审核完毕">审核完毕</option>
+                    <option value="审核未通过">审核未通过</option>
+                    <option th:if="${status}" th:value="${status}" th:text="${status}" selected></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <table>
+            <tr>
+                <th class="normalTh">车牌号</th>
+                <th class="normalTh">车辆名称</th>
+                <th class="normalTh">车辆类型</th>
+                <th class="normalTh">汽车图片</th>
+                <th class="normalTh">购置价格</th>
+                <th class="normalTh">所属人id</th>
+                <th class="normalTh">审核状态</th>
+                <th class="longTh">操作</th>
+            </tr>
+            <tr th:each="car : ${CList}">
+                <td class="normalTd" th:text="${car.getCph()}"></td>
+                <td class="normalTd" th:text="${car.getCname()}"></td>
+                <td class="normalTd" th:text="${car.getCtype()}"></td>
+                <td class="normalTd"><img th:src="@{(${car.getCimg})}" width="80px" height="50px"></td>
+                <td class="normalTd" th:text="${car.getPrice()}"></td>
+                <td class="normalTd" th:text="${car.getUid()}"></td>
+                <td class="normalTd" th:text="${car.getStatus()}"></td>
+                <td class="longTd">
+                    <a href="javascript:void(0);" th:if="${car.getStatus eq '审核中'}"
+                       th:onclick="showPopup33([[${car.getCph()}]],[[${car.getCtype()}]])">通过&nbsp;&nbsp;</a>
+                    <div th:id="'overlay+' + ${car.getCph()} + ${car.getCtype()}" class="overlay1">
+                        <form th:action="@{/admin/passCar}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认通过审核</p>
+                                <div style="display: none">
+                                    <input type="text" name="cph" th:value="${car.getCph()}">
+                                    <input type="text" name="ctype" th:value="${car.getCtype()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup33([[${car.getCph()}]],[[${car.getCtype()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:if="${car.getStatus() eq '审核完毕' || car.getStatus() eq '审核未通过'}"
+                       th:onclick="showPopup4([[${car.getCph()}]],[[${car.getCtype()}]])">回退&nbsp;&nbsp;</a>
+                    <div th:id="'overlay++' + ${car.getCph()}+${car.getCtype}" class="overlay1">
+                        <form th:action="@{/admin/backStatus}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认状态回退</p>
+                                <div style="display: none">
+                                    <input type="text" name="status" th:value="${car.getStatus()}">
+                                    <input type="text" name="cph" th:value="${car.getCph()}">
+                                    <input type="text" name="ctype" th:value="${car.getCtype()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup4([[${car.getCph()}]],[[${car.getCtype()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:if="${car.getStatus eq '审核中'}"
+                       th:onclick="showPopup22([[${car.getCph()}]],[[${car.getCtype()}]])">拒绝&nbsp;&nbsp;</a>
+                    <div th:id="'overlay-' + ${car.getCph()}+${car.getCtype()}" class="overlay1">
+                        <form th:action="@{/admin/refuseCar}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认拒绝上传</p>
+                                <div style="display: none">
+                                    <input type="text" name="cph" th:value="${car.getCph()}">
+                                    <input type="text" name="ctype" th:value="${car.getCtype()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup22([[${car.getCph()}]],[[${car.getCtype()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);"
+                       th:onclick="showPopup11([[${car.getCph()}]],[[${car.getCtype()}]])">删除</a>
+                    <div th:id="'overlay' + ${car.getCph()}+${car.getCtype()}" class="overlay1">
+                        <form th:action="@{/admin/deleteCar}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认删除车辆信息</p>
+                                <div style="display: none">
+                                    <input type="text" name="cph" th:value="${car.getCph()}">
+                                    <input type="text" name="ctype" th:value="${car.getCtype()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup11([[${car.getCph()}]],[[${car.getCtype()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="page" th:unless="${selected}" th:if="${CList.size() gt 0}">
+        当前第<span th:text="${page.pageNum}"></span>页,
+        总共<span th:text="${page.pages}"></span>页<br>
+        <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="下一页"
+           th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+    </div>
+
+    <div class="page" th:if="${selected}">
+        当前第<span th:text="${page.pageNum}"></span>页,
+        总共<span th:text="${page.pages}"></span>页<br>
+        <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage3('+1+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage3('+${page.prePage}+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="下一页"
+           th:onclick="jumpPage4([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage3('+${page.getPages()}+')'"></a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/manager.js?v=2.0"></script>
+<script>
+    function jumpPage(pageNum) {
+        if (pageNum === 0) {
+            pageNum = 1;
+        }
+        location.href = "/admin/getCarList?pageNum=" + pageNum;
+    }
+
+    $("#statusSelect").change(function () {
+        let status = $("#statusSelect").val();
+        location.href = "/admin/statusSelect/" + status;
+    });
+
+    function hidePopup4(id, type) {
+        var overlay = document.getElementById("overlay++" + id + type);
+        overlay.style.display = "none";
+    }
+
+    function showPopup4(id, type) {
+        var overlay = document.getElementById("overlay++" + id + type);
+        overlay.style.display = "block";
+    }
+
+    function jumpPage2(pageNum, pages) {
+        if (pageNum === 0) {
+            pageNum = pages;
+        }
+        location.href = "/admin/getCarList?pageNum=" + pageNum;
+    }
+
+    function jumpPage3(pageNum) {
+        let status = $("#statusSelect").val();
+        if (pageNum === 0) {
+            pageNum = 1;
+        }
+        location.href = "/admin/statusSelect/" + status + "/?pageNum=" + pageNum;
+    }
+
+    function jumpPage4(pageNum, pages) {
+        let status = $("#statusSelect").val();
+        if (pageNum === 0) {
+            pageNum = pages;
+        }
+        location.href = "/admin/statusSelect/" + status + "/?pageNum=" + pageNum;
+    }
+
+    function hidePopup33(id, type) {
+        var overlay = document.getElementById("overlay+" + id + type);
+        overlay.style.display = "none";
+    }
+
+    function showPopup33(id, type) {
+        var overlay = document.getElementById("overlay+" + id + type);
+        overlay.style.display = "block";
+    }
+
+    function showPopup11(id, type) {
+        var overlay = document.getElementById("overlay" + id + type);
+        overlay.style.display = "block";
+    }
+
+    function hidePopup11(id, type) {
+        var overlay = document.getElementById("overlay" + id + type);
+        overlay.style.display = "none";
+    }
+
+    function showPopup22(id, type) {
+        var overlay = document.getElementById("overlay-" + id + type);
+        overlay.style.display = "block";
+    }
+
+    function hidePopup22(id, type) {
+        var overlay = document.getElementById("overlay-" + id + type);
+        overlay.style.display = "none";
+    }
+</script>
+</body>
+</html>

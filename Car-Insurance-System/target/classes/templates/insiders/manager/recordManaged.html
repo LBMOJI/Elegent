@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/admin/adminPublic.css">
+    <style>
+        .content .content-table {
+            height: 540px;
+            text-align: center;
+            border-bottom: 1px gray solid;
+        }
+
+        .normalTh, .normalTd {
+            width: 100px;
+        }
+
+        .longTd, .longTh {
+            width: 170px;
+        }
+
+        td {
+            height: 80px;
+            font-size: 15px;
+        }
+
+        th {
+            height: 40px;
+        }
+        #overlay {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        .popup {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 430px;
+            border-radius: 5px;
+            margin: 140px auto;
+            text-align: center;
+        }
+
+        .popup_title {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+            font-size: 18px;
+        }
+
+        .popup_content {
+            line-height: 40px;
+            padding: 15px 20px;
+        }
+
+        .popup_btn {
+            padding-bottom: 10px;
+        }
+
+        .popup_btn button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+        .overlay1, .overlay2 {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            /* IE9以下不支持rgba模式 */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* 兼容IE8及以下 */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        /* 弹出框主体 */
+        .popup1 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 240px;
+            border-radius: 5px;
+            margin: 160px auto;
+            text-align: center;
+        }
+
+        .popup2 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 420px;
+            border-radius: 5px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        /* 弹出框的标题 */
+        .popup_title1, .popup_title2 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+        }
+
+        /* 弹出框的内容 */
+        .popup_content1{
+            height: 60px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+        .popup_content2{
+            height: 250px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+
+        .popup_content2 input{
+            font-size: 16px;
+        }
+
+        /* 弹出框的按钮栏 */
+        .popup_btn1, .popup_btn2 {
+            padding-bottom: 10px;
+        }
+
+        /* 弹出框的按钮 */
+        .popup_btn1 button, .popup_btn2 button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>后台业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li>
+            <a href="javascript:void(0);" class="one">数据统计</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getDataPicture}">数据图表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">用户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getUserList}">用户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">保险管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getBaoxianList}">保险列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one" id="now">订单管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getRecordList}">订单列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getAcceptionList}">理赔列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">车辆管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getCarList}">审核列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">业务员管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getSalerList}">业务员列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/myself}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="content-head">
+        <div class="welcome">
+            <span>欢迎：</span>
+            <span th:text="${session.admin.getUsername()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/admin/logout}">退出</a>
+        </div>
+    </div>
+    <div class="content-banner">
+        <div class="banner-name">
+            <span>订单列表</span>
+        </div>
+        <div class="banner-right">
+            <div class="banner-search">
+                <span>搜索：</span>
+                <input type="text" id="rid" autocomplete="off" placeholder="请输入订单号">
+            </div>
+            <div class="banner-add">
+                <a href="javascript:void(0);" onclick="showPopup()">添加</a>
+                <div id="overlay">
+                    <div class="popup">
+                        <form th:action="@{/admin/addRecord}" method="post" id="addForm">
+                            <p class="popup_title">添加订单</p>
+                            <span id="addTips" style="font-size: 14px;height: 20px;display: block">
+
+                            </span>
+                            <div class="popup_content">
+                                <div class="popup-item">
+                                    <input id="bname" name="bname" type="text" autocomplete="off"
+                                           placeholder="保险名称">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="endtime" name="time" type="text" autocomplete="off"
+                                           placeholder="结束日期">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="uid" name="uid" min="1" type="number" autocomplete="off"
+                                           placeholder="购买人id">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="cph" name="cph" type="text" autocomplete="off"
+                                           placeholder="被保车辆车牌号">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="type" name="type" type="text" autocomplete="off"
+                                           placeholder="汽车类型">
+                                </div>
+                            </div>
+                            <div class="popup_btn">
+                                <button class="cancelBtn" type="button" onclick="hidePopup();reset();">取消</button>
+                                <button class="confirmBtn" type="submit">确认</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <table>
+            <tr>
+                <th class="longTh">订单号</th>
+                <th class="longTh">购买保险</th>
+                <th style="width: 150px">购买时间</th>
+                <th style="width: 150px">结束时间</th>
+                <th class="normalTh">车牌号</th>
+                <th class="normalTh">车辆类型</th>
+                <th class="normalTh">购买人</th>
+                <th class="normalTh">联系电话</th>
+                <th style="width: 100px;">保额</th>
+                <th style="width: 100px;">保费</th>
+                <th class="normalTh">操作</th>
+            </tr>
+            <tr th:each="record : ${RList}">
+                <td class="longTd" th:text="${record.getId()}"></td>
+                <td class="longTd" th:text="${record.getBname()}"></td>
+                <td style="width: 150px" th:text="${#dates.format(record.getStarttime(),'yyyy-MM-dd HH:mm')}"></td>
+                <td style="width: 150px" th:text="${#dates.format(record.getEndtime(),'yyyy-MM-dd HH:mm')}"></td>
+                <td class="normalTd" th:text="${record.getCph()}"></td>
+                <td class="normalTd" th:text="${record.getType()}"></td>
+                <td class="normalTd" th:text="${record.getPerson()}"></td>
+                <td class="normalTd" th:text="${record.getPhone()}"></td>
+                <td style="width: 100px" th:text="${record.getAmount()}"></td>
+                <td style="width: 100px" th:text="${record.getCost()}"></td>
+                <td>
+                    <a href="javascript:void(0);" th:onclick="showPopup2([[${record.getId()}]])">修改</a>
+                    <div th:id="'overlay-' + ${record.getId()}" class="overlay2">
+                        <form th:action="@{/admin/reviseRecord}" method="post" th:id="${record.getId()}" name="updateForm">
+                            <div class="popup2">
+                                <p class="popup_title2">修改订单信息</p>
+                                <div class="popup_content2">
+                                    <div class="popup_content">
+                                        <div class="updateTips">
+                                            <span id="updateTips" class="tips"></span>
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>保险名称</span>
+                                            <input th:id="'bname'+${record.getId()}" name="bname" type="text" autocomplete="off"
+                                                   placeholder="保险名称" th:value="${record.getBname()}">
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>购买日期</span>
+                                            <input th:id="'starttime'+${record.getId()}" name="start" type="text" autocomplete="off"
+                                                   placeholder="购买时间" th:value="${#dates.format(record.getStarttime(),'yyyy-MM-dd HH:mm')}">
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>截止日期</span>
+                                            <input th:id="'endtime'+${record.getId()}" name="end" type="text" autocomplete="off"
+                                                   placeholder="结束时间" th:value="${#dates.format(record.getEndtime(),'yyyy-MM-dd HH:mm')}">
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>车辆牌号</span>
+                                            <input th:id="'cph'+${record.getId()}" name="cph" type="text" autocomplete="off"
+                                                   placeholder="被保车辆车牌号" th:value="${record.getCph()}">
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>车辆类型</span>
+                                            <input th:id="'ctype'+${record.getId()}" name="type" type="text" autocomplete="off"
+                                                   placeholder="被保车辆车牌号" th:value="${record.getType()}">
+                                        </div>
+                                        <div class="popup-item">
+                                            <span>购买人id</span>
+                                            <input th:id="'uid'+${record.getId()}" name="uid" min="1" type="number" autocomplete="off"
+                                                   placeholder="购买人id" th:value="${record.getUid}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${record.getId()}">
+                                </div>
+                                <div class="popup_btn2">
+                                    <button class="cancelBtn2" type="button"
+                                            th:onclick="hidePopup2([[${record.getId()}]]);reset();">取消
+                                    </button>
+                                    <button class="confirmBtn2" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:onclick="showPopup3([[${record.getId()}]])">删除</a>
+                    <div th:id="'overlay+' + ${record.getId()}" class="overlay1">
+                        <form th:action="@{/admin/deleteRecord}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认删除订单</p>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${record.getId()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup3([[${record.getId()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="page" th:if="${RList.size() gt 0}">
+        当前第<span th:text="${page.pageNum}"></span>页,
+        总共<span th:text="${page.pages}"></span>页<br>
+        <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="下一页" th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/manager.js"></script>
+<script>
+    function checkAddForm() {
+        let bname = $('#bname').val();
+        let endtime = $('#endtime').val();
+        var reDateTime = /^(?:19|20)[0-9][0-9]-(?:(?:0[1-9])|(?:1[0-2]))-(?:(?:[0-2][1-9])|(?:[1-3][0-1])) (?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]:[0-5][0-9]$/;
+        let uid = $('#uid').val();
+        let cph = $('#cph').val();
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let ctype = $('#ctype').val();
+        if (bname == ""){
+            $('#addTips').text("保险名称不可为空")
+            return false;
+        }
+        if (!reDateTime.test(endtime)){
+            $('#addTips').text("请输入正确时间戳")
+            return false;
+        }
+        if (uid == ""){
+            $('#addTips').text("uid不可为空")
+            return false;
+        }
+        if (!cphReg.test(cph)){
+            $('#addTips').text("请输入正确的车牌号")
+            return false;
+        }
+        if (ctype == ""){
+            $('#addTips').text("车辆类型不可为空")
+            return false;
+        }
+        return true;
+    }
+
+    function checkUpdateForm(id) {
+        let bname = document.getElementById("bname"+id).value;
+        let starttime = document.getElementById("starttime"+id).value;
+        var reDateTime = /^(?:19|20)[0-9][0-9]-(?:(?:0[1-9])|(?:1[0-2]))-(?:(?:[0-2][1-9])|(?:[1-3][0-1])) (?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]:[0-5][0-9]$/;
+        let endtime = document.getElementById("endtime"+id).value;
+        let uid = document.getElementById("uid"+id).value;
+        let cph = document.getElementById("cph"+id).value;
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let ctype = document.getElementById("ctype"+id).value;
+        if (bname == ""){
+            $('#addTips').text("保险名称不可为空")
+            return false;
+        }
+        if (!reDateTime.test(endtime)){
+            $('.tips').text("时间格式yyyy-MM-dd HH:mm:ss");
+            return false;
+        }
+        if (uid == ""){
+            $('.tips').text("uid不可为空")
+            return false;
+        }
+        if (!cphReg.test(cph)){
+            $('.tips').text("请输入正确的车牌号")
+            return false;
+        }
+        if (ctype == ""){
+            $('.tips').text("车辆类型不可为空")
+            return false;
+        }
+        if (!reDateTime.test(starttime)){
+            $('.tips').text("时间格式yyyy-MM-dd HH:mm:ss");
+            return false;
+        }
+        return true;
+    }
+    
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/admin/getRecordList?pageNum=" + pageNum;
+    }
+    function jumpPage2(pageNum,pages){
+        if (pageNum === 0){
+            pageNum = pages;
+        }
+        location.href = "/admin/getRecordList?pageNum=" + pageNum;
+    }
+
+    $('#addForm').submit(function (event){
+        event.preventDefault();
+        if (checkAddForm()) {
+            let form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "text",
+                async: false,
+                success: function (res) {
+                    if (res !== "") {
+                        $('#addTips').text(res);
+                    } else {
+                        location.href = "/admin/getRecordList";
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    });
+
+    $("[name='updateForm']").submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        if (checkUpdateForm(this.id.value)) {
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "text",
+                success: function (res) {
+                    if (res !== "") {
+                        $('.tips').text(res);
+                    } else {
+                        location.href = "/admin/getRecordList";
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

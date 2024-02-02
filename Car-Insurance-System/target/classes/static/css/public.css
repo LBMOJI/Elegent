@@ -1,0 +1,149 @@
+@charset "utf-8";
+img {
+    vertical-align: middle;
+}
+
+a {
+    text-decoration: none;
+    vertical-align: middle;
+}
+body{
+    background-color: whitesmoke;
+}
+.home_div {
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px lightgray solid;
+}
+
+.home_div span {
+    vertical-align: middle;
+}
+
+a, a:hover, a:link, a:visited {
+    color: black;
+}
+
+.home_div .home_left {
+    float: left;
+    margin-left: 120px;
+}
+
+.home_div .home_right {
+    float: left;
+    margin-left: 30px;
+    width: 160px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 64px;
+    height: 23px;
+}
+
+/* 下拉内容 (默认隐藏) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 64px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* 下拉菜单的链接 */
+.dropdown-content a {
+    color: black;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* 在鼠标移上去后显示下拉菜单 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.home_div .avatar {
+    height: 21px;
+    width: 21px;
+    float: left;
+}
+
+.home_div .welcome {
+    height: 30px;
+    width: 70px;
+    float: left;
+    margin-left: 10px;
+}
+
+.home_div .logOut {
+    height: 30px;
+    width: 34px;
+    float: left;
+    padding-left: 6px;
+}
+
+.home_div .logOut a {
+    vertical-align: middle;
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1280px;
+    margin: auto;
+    height: 120px;
+    background-color: white;
+}
+
+.banner .bannerLogo span {
+    font-size: 38px;
+    vertical-align: middle;
+}
+
+.banner .search {
+
+}
+
+.banner .search img {
+    margin-left: 12px;
+}
+
+.banner .search input {
+    position: relative;
+    top: 2px;
+    margin-left: 2px;
+    height: 40px;
+    width: 330px;
+    border: 2px sandybrown solid;
+    font-size: 25px;
+    outline: none;
+}
+
+.banner .bannerMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 300px;
+}
+
+.banner .bannerMenu li {
+    float: left;
+}
+
+.banner .bannerMenu li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    font-size: 20px;
+}
+
+.banner .bannerMenu li a:hover {
+    color: sandybrown;
+}

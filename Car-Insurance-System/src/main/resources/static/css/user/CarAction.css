@@ -1,0 +1,98 @@
+@charset "utf-8";
+img[src=""], img:not([src]) {
+    opacity: 0;
+}
+
+.content .myCar {
+    width: 1080px;
+    float: left;
+    background-color: white;
+    height: 550px;
+}
+
+.content .myCar .carMenu {
+    width: 304px;
+    height: 40px;
+    text-align: center;
+    list-style-type: none;
+    margin: auto;
+    padding: 20px;
+}
+
+.content .myCar .carMenu li {
+    width: 150px;
+    height: 40px;
+    float: left;
+    text-align: center;
+    margin-right: 1px;
+}
+
+.content .myCar .carMenu li a {
+    line-height: 40px;
+    font-size: 18px;
+}
+
+.content .myCar .haveCar, .content .myCar .carForm {
+    width: 800px;
+    margin: auto;
+}
+
+.content .myCar .haveCar .carList {
+    width: 600px;
+    margin: auto;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content .myCar .haveCar .carList .carDetail {
+    font-size: 18px;
+}
+
+.content .myCar .haveCar .page {
+    text-align: center;
+    padding-top: 80px;
+}
+
+.content .myCar .carForm {
+    display: none;
+}
+
+.content .myCar .carForm .form-item {
+    width: 200px;
+    height: 25px;
+    margin: 5px auto;
+}
+
+.content .myCar .carForm .form-item input {
+    width: 192px;
+    height: 20px;
+    font-size: 14px;
+}
+
+.content .myCar .carForm .form-item-img {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+}
+
+.content .myCar .carForm .formDetail {
+    width: 600px;
+    margin: auto;
+}
+.tips{
+    height: 20px;
+    font-size: 12px;
+    text-align: center;
+    color: red;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}

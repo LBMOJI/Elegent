@@ -1,0 +1,94 @@
+@charset "utf-8";
+.content {
+    border-top: 1px sandybrown solid;
+    width: 1280px;
+    height: 550px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.content .content-space{
+    border-radius: 15px;
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    margin: 10px auto;
+}
+
+.content .formMenu {
+    list-style-type: none;
+    height: 40px;
+    width: 360px;
+    padding: 16px 0 0 0;
+    margin: auto;
+    text-align: center;
+}
+
+.content .formMenu .getCph{
+    border-bottom: 1px sandybrown solid;
+}
+
+.content .formMenu li {
+    float: left;
+    width: 178px;
+    height: 40px;
+}
+
+.content .formMenu li a {
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.content .hidden{
+    height: 26px;
+    color: red;
+    line-height: 26px;
+    font-size: 13px;
+    width: 600px;
+}
+
+.content .hidden span{
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+.content .byCno {
+    display: none;
+}
+
+.content .byCno, .content .byCph {
+    border-top: 1px sandybrown solid;
+    width: 600px;
+    height: 300px;
+}
+
+.form-item {
+    width: 200px;
+    height: 50px;
+    margin: auto;
+}
+
+.form-item input {
+    font-size: 16px;
+    height: 25px;
+    width: 160px;
+    margin: 9px 16px;
+}
+.content .byCno .form-item img, .content .byCph .form-item img{
+    margin-top: 10px;
+}
+
+button{
+    width: 40%;
+    height: 40px;
+    cursor: pointer;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    margin: 5px 10px;
+    color: #ffffff;
+    background-color: sandybrown;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/personal.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content" style="padding-top: 10px">
+    <div class="sidemenu">
+        <div class="firstPage">
+            <a th:href="@{/user/toPersonal}">个人中心首页</a>
+        </div>
+        <ul>
+            <li><a href="javascript:void(0);" class="one_level_menubar">个人信息</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getInformation}">资料设置</a></li>
+                    <li>
+                        <form th:action="@{/user/cancellate}" id="cancellate" method="post">
+                            <a href="javascript:void(0);" onclick="showPopup()">账号注销</a>
+                            <div id="overlay">
+                                <div class="popup">
+                                    <p class="popup_title">提示</p>
+                                    <p class="popup_content">是否确认注销账号</p>
+                                    <div class="popup_btn">
+                                        <button class="cancelBtn" type="button" onclick="hidePopup()">取消</button>
+                                        <button class="confirmBtn" type="submit">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的订单</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getRecord}">保险订单</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的理赔</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getAcception}">理赔进度</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的资产</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getUserCarList}">我的车辆</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="audit">
+        <div class="msg">
+            <p>新的消息</p><br><br>
+            <div th:if="${carList}">
+                <span>您有</span><span th:text="${carList.size()}"></span><span>辆车辆信息等待审核</span>
+            </div>
+            <div th:if="${List}">
+                <span>您有</span><span th:text="${List.size()}"></span><span>辆车辆信息被拒绝上传</span>
+                <div th:each="car : ${List}">
+                    <span>车牌号为&nbsp;'</span><span th:text="${car.getCph()}"></span><span>'&nbsp;，请检查信息后重新上传</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/personal.js?v=1.0"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/personal.css">
+    <link rel="stylesheet" href="/css/user/getInformation.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content">
+    <div class="sidemenu">
+        <div class="firstPage">
+            <a th:href="@{/user/toPersonal}">个人中心首页</a>
+        </div>
+        <ul>
+            <li><a href="javascript:void(0);" class="one_level_menubar" id="my">个人信息</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getInformation}">资料设置</a></li>
+                    <li>
+                        <form th:action="@{/user/cancellate}" id="cancellate" method="post">
+                            <a href="javascript:void(0);" onclick="showPopup()">账号注销</a>
+                            <div id="overlay">
+                                <div class="popup">
+                                    <p class="popup_title">提示</p>
+                                    <p class="popup_content">是否确认注销账号</p>
+                                    <div class="popup_btn">
+                                        <button class="cancelBtn" type="button" onclick="hidePopup()">取消</button>
+                                        <button class="confirmBtn" type="submit">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的订单</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getRecord}">保险订单</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的理赔</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getAcception}">理赔进度</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的资产</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getUserCarList}">我的车辆</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="myInformation" class="myInformation">
+        <div class="formSide">
+            <form class="personForm" id="personForm" th:action="@{/user/revise}" method="post">
+                <span id="person">个人信息：</span>
+                <div id="overlay2">
+                    <div class="popup">
+                        <p class="popup_title">修改个人信息</p>
+                        <div class="updateTips">
+                            <span id="personTips"></span>
+                        </div>
+                        <div class="popup_content" style="height: 70px;">
+                            <div class="form-item" id="item-name">
+                                <span style="width: 64px;display: inline-block;float: left;">姓名：</span>
+                                <input id="name" name="name" type="text" autocomplete="off" placeholder="姓名"
+                                       th:value="${session.user.getName()}">
+                            </div>
+                            <div class="form-item" id="item-cno">
+                                <span>证件号：</span>
+                                <input id="cno" name="cno" type="text" autocomplete="off" placeholder="身份证号"
+                                       th:value="${session.user.getCno()}">
+                            </div>
+                        </div>
+                        <div class="popup_btn">
+                            <button class="cancelBtn" type="button" onclick="hidePopup2();reset();">取消</button>
+                            <button class="confirmBtn" type="submit">确认</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-item-right" id="personA">
+                    <a href="javascript:void(0);" onclick="showPopup2()">修改</a>
+                </div>
+            </form>
+            <form class="pswdForm" id="pswdForm" th:action="@{/user/revise}" method="post">
+                <span id="p">登录密码：</span>
+                <div id="overlay3">
+                    <div class="popup">
+                        <p class="popup_title">修改密码</p>
+                        <div class="updateTips">
+                            <span id="pswdTips"></span>
+                        </div>
+                        <div class="popup_content">
+                            <div class="form-item" id="item-pwd">
+                                <span>密码：</span>
+                                <input id="pwd" name="pwd" type="password" autocomplete="off" placeholder="登录密码"
+                                       th:value="${session.user.getPwd()}">
+                            </div>
+                        </div>
+                        <div class="popup_btn">
+                            <button class="cancelBtn" type="button" onclick="hidePopup3();reset();">取消</button>
+                            <button class="confirmBtn" type="submit">确认</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-item-right" id="pswdA">
+                    <a href="javascript:void(0);" onclick="showPopup3()">修改</a>
+                </div>
+            </form>
+            <form class="phoneForm" id="phoneForm" th:action="@{/user/revise}" method="post">
+                <span id="phonee">联系电话：</span>
+                <div id="overlay4">
+                    <div class="popup">
+                        <p class="popup_title">绑定联系电话</p>
+                        <div class="updateTips">
+                            <span id="phoneTips"></span>
+                        </div>
+                        <div class="popup_content">
+                            <div class="form-item" id="item-phone">
+                                <span>联系电话：</span>
+                                <input id="phone" name="phone" type="text" autocomplete="off" placeholder="联系电话"
+                                       th:value="${session.user.getPhone()}">
+                            </div>
+                        </div>
+                        <div class="popup_btn">
+                            <button class="cancelBtn" type="button" onclick="hidePopup4();reset();">取消</button>
+                            <button class="confirmBtn" type="submit">确认</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-item-right" id="phoneA">
+                    <a href="javascript:void(0);" onclick="showPopup4()">修改</a>
+                </div>
+            </form>
+            <form class="emailForm" id="emailForm" th:action="@{/user/revise}" method="post">
+                <span id="emaill">电子邮箱：</span>
+                <div id="overlay5">
+                    <div class="popup">
+                        <p class="popup_title">绑定电子邮箱</p>
+                        <div class="updateTips">
+                            <span id="emailTips"></span>
+                        </div>
+                        <div class="popup_content">
+                            <div class="form-item" id="item-email">
+                                <span>电子邮箱：</span>
+                                <input id="email" name="email" type="text" autocomplete="off" placeholder="电子邮箱"
+                                       th:value="${session.user.getEmail()}">
+                            </div>
+                        </div>
+                        <div class="popup_btn">
+                            <button class="cancelBtn" type="button" onclick="hidePopup5();reset();">取消</button>
+                            <button class="confirmBtn" type="submit">确认</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-item-right" id="emailA">
+                    <a href="javascript:void(0);" onclick="showPopup5()">修改</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/personal.js?v=1.2"></script>
+<script>
+    window.onload = function () {
+        let myInformation = $("#my");
+        myInformation.next().slideToggle();
+        myInformation.parent().siblings().children("ul").slideUp();
+    }
+    $('#personForm').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        $.ajax({
+            type:form.attr('method'),
+            url:form.attr('action'),
+            data:form.serialize(),
+            dataType:"text",
+            success:function(res){
+                if (res !== "") {
+                    $('#personTips').text(res);
+                }else {
+                    location.href = "/user/getInformation";
+                }
+            },
+            processData: false,
+            error:function(xhr){
+                console.log(xhr)
+            }
+        })
+    })
+    $('#pswdForm').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        $.ajax({
+            type:form.attr('method'),
+            url:form.attr('action'),
+            data:form.serialize(),
+            dataType:"text",
+            success:function(res){
+                if (res !== "") {
+                    $('#pswdTips').text(res);
+                }else {
+                    location.href = "/user/getInformation";
+                }
+            },
+            processData: false,
+            error:function(xhr){
+                console.log(xhr)
+            }
+        })
+    })
+    $('#phoneForm').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        $.ajax({
+            type:form.attr('method'),
+            url:form.attr('action'),
+            data:form.serialize(),
+            dataType:"text",
+            success:function(res){
+                if (res !== "") {
+                    $('#phoneTips').text(res);
+                }else {
+                    location.href = "/user/getInformation";
+                }
+            },
+            processData: false,
+            error:function(xhr){
+                console.log(xhr)
+            }
+        })
+    })
+    $('#emailForm').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        $.ajax({
+            type:form.attr('method'),
+            url:form.attr('action'),
+            data:form.serialize(),
+            dataType:"text",
+            success:function(res){
+                if (res !== "") {
+                    $('#emailTips').text(res);
+                }else {
+                    location.href = "/user/getInformation";
+                }
+            },
+            processData: false,
+            error:function(xhr){
+                console.log(xhr)
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

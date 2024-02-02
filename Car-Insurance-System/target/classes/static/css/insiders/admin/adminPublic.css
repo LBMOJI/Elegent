@@ -1,0 +1,133 @@
+@charset "utf-8";
+a {
+    text-decoration: none;
+}
+
+a, a:hover, a:link, a:visited {
+    color: black;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu {
+    width: 200px;
+    height: 713px;
+    text-align: center;
+    background-color: black;
+    overflow: auto;
+    float: left;
+}
+
+.menu .menuHead {
+    margin-top: 10px;
+    height: 30px;
+}
+
+.menu .menuHead span {
+    line-height: 30px;
+    color: gray;
+}
+
+.menu .menuOne {
+    margin-top: 10px;
+}
+
+.menu .menuOne li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.menu .menuOne li a {
+    font-size: 18px;
+    line-height: 40px;
+    color: white;
+}
+
+.menuTwo {
+    display: none;
+    height: 40px;
+}
+
+.menu .menuOne li .menuTwo li a {
+    font-size: 16px;
+    line-height: 40px;
+    color: white;
+}
+
+.content {
+    width: 1300px;
+    float: right;
+}
+
+.content .content-head {
+    height: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content .content-head .welcome {
+    width: 140px;
+    float: right;
+}
+
+.content .content-head .logout {
+    width: 50px;
+    float: right;
+    margin-right: 70px;
+}
+
+.content .content-banner {
+    padding-top: 20px;
+    height: 40px;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.content .content-banner .banner-name {
+    float: left;
+    width: 100px;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.content .content-banner .banner-right {
+    float: right;
+    width: 400px;
+    height: 30px;
+}
+
+.content .content-banner .banner-right .banner-search {
+    width: 250px;
+    height: 30px;
+    float: left;
+    font-size: 15px;
+}
+
+.content .content-banner .banner-add {
+    float: right;
+    width: 50px;
+    height: 30px;
+    margin-right: 100px;
+}
+
+.content .content-table {
+    height: 540px;
+    text-align: center;
+    border-bottom: 1px gray solid;
+}
+
+.content .page {
+    text-align: center;
+}
+td{
+    border-top: 1px gray solid;
+}
+table{
+    border-collapse: collapse;
+    margin: auto;
+}

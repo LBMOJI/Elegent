@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Insurance.mapper.CarMapper">
+  <resultMap id="BaseResultMap" type="com.Insurance.entity.Car">
+    <id column="cph" jdbcType="VARCHAR" property="cph" />
+    <id column="ctype" jdbcType="VARCHAR" property="ctype" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <association property="user" javaType="com.Insurance.entity.User">
+      <id column="id" property="id"/>
+      <result column="name" property="name"/>
+      <result column="sex" property="sex"/>
+      <result column="pwd" property="pwd"/>
+      <result column="phone" property="phone"/>
+      <result column="email" property="email"/>
+      <result column="cno" property="cno"/>
+    </association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.Insurance.entity.Car">
+    <result column="cimg" jdbcType="LONGVARCHAR" property="cimg" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cph, ctype, cname, uid, status, price
+  </sql>
+  <sql id="Blob_Column_List">
+    cimg
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.Insurance.entity.CarExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from car
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.Insurance.entity.CarExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from car
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from car
+    where cph = #{cph,jdbcType=VARCHAR}
+      and ctype = #{ctype,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from car
+    where cph = #{cph,jdbcType=VARCHAR}
+      and ctype = #{ctype,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.Insurance.entity.CarExample">
+    delete from car
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.Insurance.entity.Car">
+    insert into car (cph, ctype, cname, 
+      uid, status, price, 
+      cimg)
+    values (#{cph,jdbcType=VARCHAR}, #{ctype,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{cimg,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.Insurance.entity.Car">
+    insert into car
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cph != null">
+        cph,
+      </if>
+      <if test="ctype != null">
+        ctype,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="cimg != null">
+        cimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cph != null">
+        #{cph,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null">
+        #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cimg != null">
+        #{cimg,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.Insurance.entity.CarExample" resultType="java.lang.Long">
+    select count(*) from car
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update car
+    <set>
+      <if test="record.cph != null">
+        cph = #{record.cph,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctype != null">
+        ctype = #{record.ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cname != null">
+        cname = #{record.cname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cimg != null">
+        cimg = #{record.cimg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update car
+    set cph = #{record.cph,jdbcType=VARCHAR},
+      ctype = #{record.ctype,jdbcType=VARCHAR},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      cimg = #{record.cimg,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update car
+    set cph = #{record.cph,jdbcType=VARCHAR},
+      ctype = #{record.ctype,jdbcType=VARCHAR},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Insurance.entity.Car">
+    update car
+    <set>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cimg != null">
+        cimg = #{cimg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cph = #{cph,jdbcType=VARCHAR}
+      and ctype = #{ctype,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.Insurance.entity.Car">
+    update car
+    set cname = #{cname,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      cimg = #{cimg,jdbcType=LONGVARCHAR}
+    where cph = #{cph,jdbcType=VARCHAR}
+      and ctype = #{ctype,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Insurance.entity.Car">
+    update car
+    set cname = #{cname,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL}
+    where cph = #{cph,jdbcType=VARCHAR}
+      and ctype = #{ctype,jdbcType=VARCHAR}
+  </update>
+  <select id="selectCarAndUser" resultMap="ResultMapWithBLOBs">
+    select *
+    from car c
+           left join user u on c.uid = u.id
+    where c.status = "审核完毕";
+  </select>
+  <select id="selectCarAndUserByCph" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select *
+    from car c
+           left join user u on c.uid = u.id
+    where c.status = "审核完毕"
+      and cph = #{cph,jdbcType=VARCHAR};
+  </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select *
+    from car c
+           left join user u on c.uid = u.id
+  </select>
+  <select id="selectByStatus" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select *
+    from car c
+           left join user u on c.uid = u.id
+    where c.status = #{status,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCph" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select *
+    from car c
+           left join user u on c.uid = u.id
+    where cph = #{cph,jdbcType=VARCHAR}
+  </select>
+</mapper>

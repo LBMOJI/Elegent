@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/insidersLogin.css">
+</head>
+<body>
+<div class="loginBox">
+    <ul>
+        <li id="saler" style="border-bottom: 2px solid black;"><a id="saler-a" href="javascript:void(0);" onclick="salerLogin()">员工登录</a></li>
+        <li id="admin"><a id="admin-a" href="javascript:void(0);" onclick="adminLogin()">管理登录</a></li>
+    </ul>
+    <div class="form-item-errorMsg">
+        <span id="errorMsg" class="errorMsg" th:if="${errorMsg}" th:text="${errorMsg}"></span>
+    </div>
+    <form method="post" th:action="@{/salerDoLogin}" id="salerForm" class="salerForm">
+        <div class="form-item">
+            <input id="id" name="id" type="text" autocomplete="off" placeholder="业务员账号">
+        </div>
+        <div class="form-item">
+            <input id="password" name="pwd" type="password" autocomplete="off" placeholder="登录密码">
+        </div>
+        <div class="form-item">
+            <input id="verifyCode" name="verifyCode" type="text" autocomplete="off" placeholder="验证码">
+        </div>
+        <div class="form-item" style="text-align: center">
+            <img th:src="@{/defaultKaptcha}" onclick="this.src='defaultKaptcha'" alt="单击图片刷新" width="100" height="25">
+        </div>
+        <div class="form-item" style="text-align: center">
+            <button id="submit">登录</button>
+        </div>
+    </form>
+    <form method="post" th:action="@{/adminDoLogin}" id="adminForm" class="adminForm">
+        <div class="form-item">
+            <input id="adminid" name="id" type="text" autocomplete="off" placeholder="管理员账号">
+        </div>
+        <div class="form-item">
+            <input id="adminpassword" name="pwd" type="password" autocomplete="off" placeholder="登录密码">
+        </div>
+        <div class="form-item">
+            <input id="adminverifyCode" name="verifyCode" type="text" autocomplete="off" placeholder="验证码">
+        </div>
+        <div class="form-item" style="text-align: center">
+            <img th:src="@{/defaultKaptcha}" onclick="this.src='defaultKaptcha'" alt="单击图片刷新" width="100" height="25">
+        </div>
+        <div class="form-item" style="text-align: center">
+            <button id="adminsubmit">登录</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    function salerLogin(){
+        $("#salerForm").css('display','block');
+        $("#adminForm").css('display','none');
+        $('#errorMsg').text("");
+    }
+    function adminLogin() {
+        $("#adminForm").css('display','block');
+        $("#salerForm").css('display','none');
+        $('#errorMsg').text("");
+    }
+
+    $("#saler-a").mousedown(function () {
+        $('#saler').css('border-bottom','2px black solid');
+        $('#admin').css('border-bottom','none');
+    });
+
+    $("#admin-a").mousedown(function () {
+        $('#admin').css('border-bottom','2px black solid');
+        $('#saler').css('border-bottom','none');
+    });
+
+</script>
+</body>
+</html>

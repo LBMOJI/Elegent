@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/addAcception.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/user/toLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/user/toRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content" style="padding-top: 10px">
+    <div class="detail-box">
+        <div th:if="${record}" class="detail">
+            <div class="detail-item">
+                <span>保单号：</span>
+                <span th:text="${record.getId()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>保险名称：</span>
+                <span th:text="${record.getBname()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>投保时间：</span>
+                <span th:text="${#dates.format(record.getStarttime(),'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+            <div class="detail-item">
+                <span>投保时长：</span>
+                <span th:text="${#dates.format(record.getEndtime(),'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+            <div class="detail-item">
+                <span>车辆名称：</span>
+                <span th:text="${record.getCname()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>车牌号：</span>
+                <span th:text="${record.getCph()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>车辆类型：</span>
+                <span th:text="${record.getType()}"></span>
+            </div>
+        </div>
+        <div th:if="${record != null && session.user != null && session.user.getPhone() eq record.getPhone()}" class="detail-item-submit">
+            <a th:href="@{'/addByRecord/' + ${record.getId()}}">申请理赔</a>
+        </div>
+        <div th:if="${acception}" class="detail-a">
+            <div class="detail-item">
+                <span>保单号：</span>
+                <span th:text="${acception.getId()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>保险名称：</span>
+                <span th:text="${acception.getBname()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>汽车名称：</span>
+                <span th:text="${acception.getCname()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>车牌号：</span>
+                <span th:text="${acception.getCph()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>汽车类型：</span>
+                <span th:text="${acception.getType()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>理赔状态：</span>
+                <span th:text="${acception.getStatus()}"></span>
+            </div>
+            <div class="detail-item">
+                <span>赔付金额：</span>
+                <span th:text="${acception.getPayout()}"></span>
+            </div>
+        </div>
+        <img th:if="${acception}" th:src="@{(${acception.getImg()})}" width="250" height="200">
+    </div>
+    <div class="ad">
+        <img th:src="@{/img/ad.jpg}" width="1280px" height="280px">
+    </div>
+</div>
+</div>
+</body>
+</html>

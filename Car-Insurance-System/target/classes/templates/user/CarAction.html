@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/personal.css">
+    <link rel="stylesheet" href="/css/user/CarAction.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content">
+    <div class="sidemenu">
+        <div class="firstPage">
+            <a th:href="@{/user/toPersonal}">个人中心首页</a>
+        </div>
+        <ul>
+            <li><a href="javascript:void(0);" class="one_level_menubar">个人信息</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getInformation}">资料设置</a></li>
+                    <li>
+                        <form th:action="@{/user/cancellate}" id="cancellate" method="post">
+                            <a href="javascript:void(0);" onclick="showPopup()">账号注销</a>
+                            <div id="overlay">
+                                <div class="popup">
+                                    <p class="popup_title">提示</p>
+                                    <p class="popup_content">是否确认注销账号</p>
+                                    <div class="popup_btn">
+                                        <button class="cancelBtn" type="button" onclick="hidePopup()">取消</button>
+                                        <button class="confirmBtn" type="submit">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的订单</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getRecord}">保险订单</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的理赔</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getAcception}">理赔进度</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar" id="my">我的资产</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getUserCarList}">我的车辆</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="myCar" class="myCar">
+        <ul class="carMenu">
+            <li id="CarInformation" style="border-bottom: 1px black solid"><a href="javascript:void(0);" th:onclick="'hideCarForm()'">车辆信息</a></li>
+            <li id="CarFormLi"><a href="javascript:void(0);" th:onclick="'getCarForm()'">车辆上传</a></li>
+        </ul>
+        <div class="haveCar" id="haveCar">
+            <div th:if="${CList}">
+                <div th:each="car : ${CList}" class="carList">
+                    <div class="carDetail" style="float: left;">
+                        <span>车牌号：</span><span th:text="${car.getCph()}"></span><br><br>
+                        <span>车辆名称：</span><span th:text="${car.getCname()}"></span><br><br>
+                        <span>车辆类型：</span><span th:text="${car.getCtype()}"></span>
+                    </div>
+                    <img th:src="@{(${car.getCimg()})}" style="float: right;height: 180px;width: 320px;">
+                </div>
+            </div>
+            <div class="page" th:if="${CList}">
+                当前第<span th:text="${page.pageNum}"></span>页,
+                总共<span th:text="${page.pages}"></span>页<br>
+                <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="下一页" th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+            </div>
+        </div>
+        <div id="carForm" class="carForm">
+            <div class="tips">
+                <span id="tips"></span>
+            </div>
+            <form id="form" enctype="multipart/form-data" th:action="@{/user/addCar}" method="post" class="formDetail">
+                <div class="form-item">
+                    <input id="cname" name="cname" type="text" autocomplete="off" placeholder="车辆名称">
+                </div>
+                <div class="form-item">
+                    <input id="cph" name="cph" type="text" autocomplete="off" placeholder="车牌号">
+                </div>
+                <div class="form-item">
+                    <input id="ctype" name="ctype" type="text" autocomplete="off" placeholder="车辆类型">
+                </div>
+                <div class="form-item">
+                    <input id="price" name="price" type="number" autocomplete="off" placeholder="购置价">
+                </div>
+                <div class="form-item-img">
+                    <div id="imagePreview" class="imagePerview">
+                        <img id="imgid" src="" width="200px" height="200px"/>
+                    </div>
+                    <input id="imageInput" th:onchange="'loadImageFile();'" name="cimg" type="file"
+                           autocomplete="off" placeholder="" style="width: 170px;">
+                </div>
+                <div class="form-item" style="text-align: center">
+                    <button type="submit">确认上传</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/personal.js?v=1.0"></script>
+<script>
+    var loadImageFile = (function () {
+        if (window.FileReader) {
+            var oPreviewImg = null, oFReader = new window.FileReader(),
+                rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+            oFReader.onload = function (oFREvent) {
+                if (!oPreviewImg) {
+                    var newPreview = document.getElementById("imagePreview");
+                    oPreviewImg = new Image();
+                    oPreviewImg.style.width = 200 + "px";
+                    oPreviewImg.style.height = 200 + "px";
+                    if (newPreview.childNodes.length != 0) {
+                        newPreview.removeChild(document.getElementById("imgid"));
+                    }
+                    newPreview.appendChild(oPreviewImg);
+                }
+                oPreviewImg.src = oFREvent.target.result;
+            };
+
+            return function () {
+                var aFiles = document.getElementById("imageInput").files;
+                if (aFiles.length === 0) {
+                    return;
+                }
+                if (!rFilter.test(aFiles[0].type)) {
+                    alert("You must select a valid image file!");
+                    return;
+                }
+                oFReader.readAsDataURL(aFiles[0]);
+            }
+
+        }
+        if (navigator.appName === "Microsoft Internet Explorer") {
+            return function () {
+                alert(document.getElementById("imageInput").value);
+                document.getElementById("imagePreview").filters
+                    .item("DXImageTransform.Microsoft.AlphaImageLoader").src = document
+                    .getElementById("imageInput").value;
+            }
+        }
+    })();
+    function getCarForm() {
+        $('#haveCar').css('display', 'none')
+        $('#carForm').css('display', 'block');
+        $('#CarFormLi').css('border-bottom','2px black solid');
+        $('#CarInformation').css('border-bottom','none');
+        $('#tips').text("");
+    }
+
+    function hideCarForm() {
+        $('#haveCar').css('display', 'block')
+        $('#carForm').css('display', 'none');
+        $('#CarFormLi').css('border-bottom','none');
+        $('#CarInformation').css('border-bottom','2px black solid');
+        $('#tips').text("");
+    }
+
+    window.onload = function () {
+        let my = $("#my");
+        my.next().slideToggle();
+        my.parent().siblings().children("ul").slideUp();
+    }
+
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/user/getUserCarList?pageNum=" + pageNum;
+    }
+    function jumpPage2(pageNum,pages){
+        if (pageNum === 0){
+            pageNum = pages;
+        }
+        location.href = "/user/getUserCarList?pageNum=" + pageNum;
+    }
+    function check() {
+        let name = $('#cname').val();
+        let cph = $('#cph').val();
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let type = $('#ctype').val();
+        let img = $('#imageInput').val();
+        let price = $('#price').val();
+        if (name == ""){
+            $('#tips').text("请输入汽车名称");
+            return false;
+        }
+        if (!cphReg.test(cph)){
+            $('#tips').text("请输入正确的车牌号");
+            return false;
+        }
+        if (type == ""){
+            $('#tips').text("请输入汽车类型");
+            return false;
+        }
+        if (img == ""){
+            $('#tips').text("请选择汽车图片");
+            return false;
+        }
+        if (price = ""){
+            $('#tips').text("请输入购置价");
+            return false;
+        }
+        return true;
+    }
+
+    $('#form').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        if  (check()) {
+            var formData = new FormData();
+            var cname = $('#cname').val();
+            var cph = $('#cph').val();
+            var ctype = $('#ctype').val();
+            var f = document.getElementsByName("cimg")[0].files[0];
+            formData.append("cname", cname);
+            formData.append("cph", cph);
+            formData.append("ctype", ctype);
+            formData.append("cimg", f);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: formData,
+                dataType: "text",
+                async: false,
+                success: function (res) {
+                    if (res === "PRIMARY") {
+                        $('#tips').text("该车辆已被上传，请检查输入的车牌号与类型");
+                    } else {
+                        alert(res);
+                        location.href = "/user/getUserCarList";
+                    }
+                },
+                contentType: false,
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    })
+</script>
+</body>
+</html>

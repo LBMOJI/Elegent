@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link rel="stylesheet" href="/css/insiders/admin/adminPublic.css">
+    <style>
+        #overlay {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        .popup {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 430px;
+            border-radius: 5px;
+            margin: 130px auto;
+            text-align: center;
+        }
+
+        .popup_title {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+            font-size: 18px;
+        }
+
+        .popup_content {
+            line-height: 40px;
+            padding: 15px 20px;
+        }
+
+        .popup_btn {
+            padding-bottom: 10px;
+        }
+
+        .popup_btn button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+        .overlay1, .overlay2 {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            /* IE9以下不支持rgba模式 */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* 兼容IE8及以下 */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        /* 弹出框主体 */
+        .popup1 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 240px;
+            border-radius: 5px;
+            margin: 160px auto;
+            text-align: center;
+        }
+
+        .popup2 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 410px;
+            border-radius: 5px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .updateTips{
+            height: 20px;
+            line-height: 20px;
+        }
+
+        /* 弹出框的标题 */
+        .popup_title1, .popup_title2 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+        }
+
+        /* 弹出框的内容 */
+        .popup_content1{
+            height: 60px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+        .popup_content2{
+            height: 270px;
+            line-height: 50px;
+        }
+
+        .popup_content2 input{
+            font-size: 16px;
+        }
+
+        /* 弹出框的按钮栏 */
+        .popup_btn1, .popup_btn2 {
+            padding-bottom: 10px;
+        }
+
+        /* 弹出框的按钮 */
+        .popup_btn1 button, .popup_btn2 button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+        .shortTd,.shortTh{
+            width: 80px;
+        }
+
+        .normalTh, .normalTd {
+            width: 100px;
+        }
+
+        .longTd, .longTh {
+            width: 170px;
+        }
+
+        td {
+            height: 60px;
+            font-size: 15px;
+        }
+
+        th {
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>后台业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li>
+            <a href="javascript:void(0);" class="one">数据统计</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getDataPicture}">数据图表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">用户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getUserList}">用户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">保险管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getBaoxianList}">保险列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">订单管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getRecordList}">订单列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one" id="now">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getAcceptionList}">理赔列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">车辆管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getCarList}">审核列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">业务员管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getSalerList}">业务员列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/myself}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="content-head">
+        <div class="welcome">
+            <span>欢迎：</span>
+            <span th:text="${session.admin.getUsername()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/admin/logout}">退出</a>
+        </div>
+    </div>
+    <div class="content-banner">
+        <div class="banner-name">
+            <span>申请列表</span>
+        </div>
+        <div class="banner-right">
+            <div class="banner-search">
+                <span>搜索：</span>
+                <input type="text" id="aid" autocomplete="off" placeholder="请输入订单号">
+            </div>
+            <div class="banner-add">
+                <a href="javascript:void(0);" onclick="showPopup()">添加</a>
+                <div id="overlay">
+                    <div class="popup">
+                        <form th:action="@{/admin/addAcception}" id="addForm" method="post">
+                            <p class="popup_title">添加申请</p>
+                            <span id="addTips" style="font-size: 14px;height: 20px;display: block">
+
+                            </span>
+                            <div class="popup_content">
+                                <div class="popup-item">
+                                    <input id="bname" name="bname" type="text" autocomplete="off"
+                                           placeholder="保险名称">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="uid" name="uid" type="number" min="1" autocomplete="off"
+                                           placeholder="用户id">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="cph" name="cph" type="text" autocomplete="off"
+                                           placeholder="车牌号">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="type" name="type" type="text" autocomplete="off"
+                                           placeholder="车辆类型">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="status" name="status" type="text" autocomplete="off"
+                                           placeholder="未受理|受理中|已完成|已拒绝">
+                                </div>
+                            </div>
+                            <div class="popup_btn">
+                                <button class="cancelBtn" type="button" onclick="hidePopup();reset();">取消</button>
+                                <button class="confirmBtn" type="submit">确认</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <table>
+            <tr>
+                <th class="longTh">保险单号</th>
+                <th class="longTh">保险名称</th>
+                <th class="longTh">申请日期</th>
+                <th class="shortTh">被保车辆</th>
+                <th class="shortTh">车牌号</th>
+                <th class="shortTh">车辆类型</th>
+                <th class="shortTh">保险人</th>
+                <th class="normalTh">联系电话</th>
+                <th class="shortTh">赔付金额</th>
+                <th class="shortTh">状态</th>
+                <th class="longTh">操作</th>
+            </tr>
+            <tr th:each="acception : ${AList}">
+                <td class="longTd" th:text="${acception.getId()}"></td>
+                <td class="longTd" th:text="${acception.getBname()}"></td>
+                <td class="longTd" th:text="${#dates.format(acception.getApplytime(),'yyyy-MM-dd HH:mm')}"></td>
+                <td class="shortTd" th:text="${acception.getCname()}"></td>
+                <td class="shortTd" th:text="${acception.getCph()}"></td>
+                <td class="shortTd" th:text="${acception.getType()}"></td>
+                <td class="shortTd" th:text="${acception.getPerson()}"></td>
+                <td class="normalTd" th:text="${acception.getPhone()}"></td>
+                <td class="shortTd" th:text="${acception.getPayout()}"></td>
+                <td class="shortTd" th:text="${acception.getStatus()}"></td>
+                <td class="longTd">
+                    <a href="javascript:void(0);" th:onclick="showPopup3([[${acception.getId()}]])">状态回退</a>&nbsp;&nbsp;
+                    <div th:id="'overlay+' + ${acception.getId()}" class="overlay1">
+                        <form th:action="@{/admin/rollBackStatus}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认回退申请状态</p>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${acception.getId()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup3([[${acception.getId()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:onclick="showPopup2([[${acception.getId()}]])">修改</a>&nbsp;&nbsp;
+                    <div th:id="'overlay-' + ${acception.getId()}" class="overlay2">
+                        <form th:action="@{/admin/updateAcception}" th:id="${acception.getId()}" name="updateForm" method="post">
+                            <div class="popup2">
+                                <p class="popup_title2">修改申请信息</p>
+                                <div class="popup_content2">
+                                    <div class="updateTips" style="height: 18px">
+                                        <span class="tips"></span>
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>保险名称</span>
+                                        <input th:id="'bname'+${acception.getId()}" type="text" name="bname" th:value="${acception.getBname()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>保险人id</span>
+                                        <input th:id="'uid'+${acception.getId()}" type="number" name="uid" th:value="${acception.getUid()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>车辆牌号</span>
+                                        <input th:id="'cph'+${acception.getId()}" type="text" name="cph" th:value="${acception.getCph()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>汽车类型</span>
+                                        <input th:id="'type'+${acception.getId()}" type="text" name="type" th:value="${acception.getType()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>赔偿金额</span>
+                                        <input th:id="'payout'+${acception.getId()}" type="number" name="payout" th:value="${acception.getPayout()}">
+                                    </div>
+                                </div>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${acception.getId()}">
+                                </div>
+                                <div class="popup_btn2">
+                                    <button class="cancelBtn2" type="button"
+                                            th:onclick="hidePopup2([[${acception.getId()}]]);reset();">取消
+                                    </button>
+                                    <button class="confirmBtn2" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:onclick="showPopup1([[${acception.getId()}]])">删除</a>
+                    <div th:id="'overlay' + ${acception.getId()}" class="overlay1">
+                        <form th:action="@{/admin/deleteAcception}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认删除申请信息</p>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${acception.getId()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="hidePopup1([[${acception.getId()}]])">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="page" th:if="${AList.size() gt 0}">
+        当前第<span th:text="${page.pageNum}"></span>页,
+        总共<span th:text="${page.pages}"></span>页<br>
+        <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="下一页" th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/manager.js?v=2.0"></script>
+<script>
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/admin/getAcceptionList?pageNum=" + pageNum;
+    }
+    function jumpPage2(pageNum,pages){
+        if (pageNum === 0){
+            pageNum = pages;
+        }
+        location.href = "/admin/getAcception?pageNum=" + pageNum;
+    }
+    
+    function checkAddForm() {
+        let bname = $('#bname').val();
+        let uid = $('#uid').val();
+        let cph = $('#cph').val();
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let type = $('#type').val();
+        let status = $('#status').val();
+        if (bname == ""){
+            $('#addTips').text("请输入保险名称");
+            return false;
+        }
+        if (uid == ""){
+            $('#addTips').text("请输入用户id");
+            return false;
+        }
+        if (!cphReg.test(cph)){
+            $('#addTips').text("请输入正确的车牌号");
+            return false;
+        }
+        if (type == ""){
+            $('#addTips').text("请输入车辆类型");
+            return false;
+        }
+        if (status == ""){
+            $('#addTips').text("请输入申请状态");
+            return false;
+        }
+        if (!(status == "未受理" || status == "受理中" || status == "已完成" ||status == "已拒绝")){
+            $('#addTips').text("请输入正确的申请状态");
+            return false;
+        }
+        return true;
+    }
+
+    function checkUpdateForm(id) {
+        let bname = document.getElementById("bname"+id).value;
+        let uid = document.getElementById("uid"+id).value;
+        let cph = document.getElementById("cph"+id).value;
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let type = document.getElementById("type"+id).value;
+        if (bname == ""){
+            $('#addTips').text("保险名称不可为空")
+            return false;
+        }
+        if (uid == ""){
+            $('.tips').text("uid不可为空")
+            return false;
+        }
+        if (!cphReg.test(cph)){
+            $('.tips').text("请输入正确的车牌号")
+            return false;
+        }
+        if (type == ""){
+            $('.tips').text("车辆类型不可为空")
+            return false;
+        }
+        return true;
+    }
+
+    $('#addForm').submit(function (event){
+        event.preventDefault();
+        if (checkAddForm()) {
+            let form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "text",
+                async: false,
+                success: function (res) {
+                    if (res !== "") {
+                        $('#addTips').text(res);
+                    } else {
+                        location.href = "/admin/getAcceptionList";
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    });
+    $("[name='updateForm']").submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        if (checkUpdateForm(this.id.value)) {
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "text",
+                async: false,
+                success: function (res) {
+                    if (res !== "") {
+                        $('.tips').text(res);
+                    } else {
+                        location.href = "/admin/getAcceptionList";
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    });
+
+</script>
+</body>
+</html>

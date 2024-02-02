@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/saler/salerPublic.css">
+    <style>
+        .content .workSpace .acceptionAction {
+            padding-top: 20px;
+        }
+
+        .content .workSpace .acceptionAction .table-head {
+            height: 40px;
+        }
+
+        .content .workSpace .acceptionAction .table-head td {
+            font-size: 15px;
+            width: 113px;
+            height: 40px;
+            border-bottom: 1px gray solid;
+        }
+
+        .acception {
+            height: 80px;
+        }
+
+        .acception td {
+            width: 111px;
+            height: 80px;
+            font-size: 13px;
+            word-wrap: break-word;
+            border-bottom: 1px gray solid;
+        }
+
+        img[src=""], img:not([src]) {
+            opacity: 0;
+        }
+        .overlay1 {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        .popup1 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 250px;
+            border-radius: 5px;
+            margin: 160px auto;
+            text-align: center;
+        }
+
+        .popup_title1 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+            font-size: 18px;
+        }
+
+        .popup_content1 {
+            line-height: 40px;
+            padding: 10px 20px;
+        }
+
+        .popup_content1 p{
+            margin: 0;
+        }
+
+        .popup_btn1 {
+            padding-bottom: 10px;
+        }
+
+        .popup_btn1 button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>员工业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li><a href="javascript:void(0);" class="one" id="now">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/saler/getAcception}">理赔受理</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">客户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/saler/toUserList}">客户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/saler/toInformation}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="head">
+        <div class="welcome">
+            <span>欢迎:</span>
+            <span th:text="${session.saler.getName()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/saler/logout}">退出</a>
+        </div>
+    </div>
+    <div class="workSpace">
+        <div class="workSpaceName"><span>理赔受理</span></div>
+        <div class="workSpaceRight">
+            <span>搜索：</span>
+            <input type="text" id="bid" name="bid" autocomplete="off" placeholder="保险单号">
+        </div>
+        <div class="acceptionAction">
+            <div style="height: 540px;">
+                <table>
+                    <tbody>
+                    <tr th:unless="${AList}">
+                        <span>未收到理赔申请</span>
+                    </tr>
+                    <tr th:if="${AList}" class="table-head">
+                        <td>保险单号</td>
+                        <td>保险名称</td>
+                        <td>申请时间</td>
+                        <td>被保险车辆</td>
+                        <td>车牌号</td>
+                        <td>车辆图片</td>
+                        <td>车辆类型</td>
+                        <td>申请人</td>
+                        <td>联系电话</td>
+                        <td>赔付金额</td>
+                        <td>操作</td>
+                    </tr>
+                    <tr th:each="acception : ${AList}" th:if="${AList}" class="acception">
+                        <td th:text="${acception.getId()}"></td>
+                        <td th:text="${acception.getBname()}"></td>
+                        <td th:text="${#dates.format(acception.getApplytime(),'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${acception.getCname()}"></td>
+                        <td th:text="${acception.getCph()}"></td>
+                        <td><img th:src="@{(${acception.getImg()})}" width="50px" height="50px"></td>
+                        <td th:text="${acception.getType()}"></td>
+                        <td th:text="${acception.getPerson()}"></td>
+                        <td th:text="${acception.getPhone()}"></td>
+                        <td th:text="${acception.getPayout()}"></td>
+                        <td th:if="${acception.getStatus()} eq '未受理'">
+                            <a href="javascript:void(0);" th:onclick="showPopup1([[${acception.getId()}]])">受理</a>
+                            <div th:id="'overlay' + ${acception.getId()}" class="overlay1">
+                                <form th:action="@{/saler/startAcception}" method="post">
+                                    <div class="popup1">
+                                        <p class="popup_title1">提示</p>
+                                        <p class="popup_content1">是否确认受理申请</p>
+                                        <div style="display: none">
+                                            <input type="text" name="id" th:value="${acception.getId()}">
+                                        </div>
+                                        <div class="popup_btn1">
+                                            <button class="cancelBtn1" type="button"
+                                                    th:onclick="hidePopup1([[${acception.getId()}]])">取消
+                                            </button>
+                                            <button class="confirmBtn1" type="submit">确认</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <a href="javascript:void(0);" th:onclick="showPopup2([[${acception.getId()}]])">拒绝</a>
+                            <div th:id="'overlay-' + ${acception.getId()}" class="overlay1">
+                                <form th:action="@{/saler/refuseAcception}" method="post">
+                                    <div class="popup1">
+                                        <p class="popup_title1">提示</p>
+                                        <p class="popup_content1">是否确认拒绝申请</p>
+                                        <div style="display: none">
+                                            <input type="text" name="id" th:value="${acception.getId()}">
+                                        </div>
+                                        <div class="popup_btn1">
+                                            <button class="cancelBtn1" type="button"
+                                                    th:onclick="hidePopup2([[${acception.getId()}]])">取消
+                                            </button>
+                                            <button class="confirmBtn1" type="submit">确认</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                        <td th:if="${acception.getStatus()} eq '受理中'">
+                            <a href="javascript:void(0);" th:onclick="showPopup3([[${acception.getId()}]])">可完成</a>
+                            <div th:id="'overlay+' + ${acception.getId()}" class="overlay1">
+                                <form th:action="@{/saler/finishAcception}" method="post" th:onsubmit="return checkPayout([[${acception.getId()}]])">
+                                    <div class="popup1">
+                                        <p class="popup_title1">提示</p>
+                                        <div class="popup_content1">
+                                            <p>请填写赔付金额</p>
+                                            <div class="form-item">
+                                                <input type="number" step="0.01" name="payout" th:id="'payout'+${acception.getId()}" placeholder="赔付金额">
+                                            </div>
+                                        </div>
+                                        <div style="display: none">
+                                            <input type="text" name="id" th:value="${acception.getId()}">
+                                        </div>
+                                        <div class="popup_btn1">
+                                            <button class="cancelBtn1" type="button"
+                                                    th:onclick="hidePopup3([[${acception.getId()}]])">取消
+                                            </button>
+                                            <button class="confirmBtn1" type="submit">确认</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                        <td th:if="${acception.getStatus()} eq '已完成'">
+                            <a href="javascript:void(0);">已完成</a>
+                        </td>
+                        <td th:if="${acception.getStatus()} eq '已拒绝'">
+                            <a href="javascript:void(0);">已拒绝</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page" th:if="${AList.size() gt 0}">
+                当前第<span th:text="${page.pageNum}"></span>页,
+                总共<span th:text="${page.pages}"></span>页<br>
+                <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="下一页" th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+                <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    function checkPayout(id) {
+        var payout = document.getElementById('payout' + id).value;
+        if (payout == ""){
+            return false;
+        }
+        return true;
+    }
+    
+    $(document).ready(function () {
+
+        $(".one").click(function () {
+            $(this).next().slideToggle();
+            $(this).parent().siblings().children("ul").slideUp();
+        });
+
+        $('#bid').on("keydown", function (event) {
+            let keycode = event.keyCode || event.which;
+            let bid = $('#bid').val();
+            if (keycode == "13") {
+                location.href = "/saler/search/" + bid;
+            }
+        });
+    });
+
+    window.onload = function () {
+        let my = $("#now");
+        my.next().slideToggle();
+        my.parent().siblings().children("ul").slideUp();
+    }
+
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/saler/getAcception?pageNum=" + pageNum;
+    }
+    function jumpPage2(pageNum,pages){
+        if (pageNum === 0){
+            pageNum = pages;
+        }
+        location.href = "/saler/getAcception?pageNum=" + pageNum;
+    }
+    function showPopup2(id) {
+        var overlay = document.getElementById("overlay-" + id);
+        overlay.style.display = "block";
+    }
+
+    function hidePopup2(id) {
+        var overlay = document.getElementById("overlay-" + id);
+        overlay.style.display = "none";
+    }
+    function showPopup1(id) {
+        var overlay = document.getElementById("overlay" + id);
+        overlay.style.display = "block";
+    }
+
+    function hidePopup1(id) {
+        var overlay = document.getElementById("overlay" + id);
+        overlay.style.display = "none";
+    }
+
+    function hidePopup3(id) {
+        var overlay = document.getElementById("overlay+" + id);
+        overlay.style.display = "none";
+    }
+
+    function showPopup3(id) {
+        var overlay = document.getElementById("overlay+" + id);
+        overlay.style.display = "block";
+    }
+</script>
+</body>
+</html>

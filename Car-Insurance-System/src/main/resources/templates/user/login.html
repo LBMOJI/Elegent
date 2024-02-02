@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/user/login.css">
+</head>
+<body>
+<div class="loginBok">
+    <div class="backMain">
+        <a th:href="@{/index}">回首页</a>
+    </div>
+    <div class="boxTitle">
+        <h3 style="margin: 0">用户登录</h3>
+    </div>
+    <form method="post" th:action="@{/userDoLogin}" onsubmit="return checkForm()">
+        <div class="form-item" style="text-align: center;height: 24px">
+            <span th:if="${errorMsg}" th:text="${errorMsg}"></span>
+            <span id="errorMsg"></span>
+        </div>
+        <div class="form-item">
+            <input id="phone" name="phone" type="text" autocomplete="off" placeholder="请输入手机号">
+            <span id="phoneTips" class="tips"></span>
+        </div>
+        <div class="form-item">
+            <input id="password" name="password" type="password" autocomplete="off" placeholder="请输入密码">
+            <span id="passwordTips" class="tips"></span>
+        </div>
+        <div class="form-item">
+            <input id="verifyCode" class="verifyCode" name="verifyCode" type="text" autocomplete="off" placeholder="验证码">
+            <img class="verifyImg" th:src="@{/defaultKaptcha}" onclick="this.src='defaultKaptcha'" alt="单击图片刷新" width="100" height="32">
+        </div>
+        <div class="form-item" style="text-align: center">
+            <button id="submit">登录</button>
+        </div>
+    </form>
+    <div class="reg-bar">
+        <a class="reg" th:href="@{/userToRegister}">立即注册</a>
+        <a class="forget" th:href="@{/forget}">忘记密码</a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#phone').blur(function () {
+            let phone = $('#phone');
+            if (phone.val() === ""){
+                $('#phoneTips').text("请输入已验证的手机号");
+                phone.css('color','red');
+            }else{
+                $('#phoneTips').text("");
+                phone.css('color','black');
+            }
+        });
+
+        $('#password').blur(function () {
+            let password = $('#password');
+            if (password.val() === ""){
+                $('#passwordTips').text("请输入密码");
+            }else{
+                $('#passwordTips').text("");
+            }
+        })
+    })
+    
+    function checkForm() {
+        let phone = $('#phone').val();
+        let password = $('#password').val();
+        let code = $('#verifyCode').val();
+        if (phone === ""){
+            $('#errorMsg').text("请检查输入的账户");
+            return false;
+        }
+        if (password === ""){
+            $('#errorMsg').text("请输入密码");
+            return false;
+        }
+        if (code === ""){
+            $('#errorMsg').text("请输入验证码");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

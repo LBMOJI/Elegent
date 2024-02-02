@@ -1,0 +1,88 @@
+@charset "utf-8";
+body{
+    background-image: url("../../img/background.png");
+    background-size: 100%;
+}
+.loginBok{
+    height: 350px;
+    width: 400px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 15px;
+}
+.loginBok .backMain{
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 20px;
+    padding-top: 10px;
+}
+.loginBok .backMain a{
+    line-height: 20px;
+    float: right;
+    padding-right: 10px;
+}
+.loginBok .boxTitle{
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+}
+.form-item{
+    width: 250px;
+    height: 52px;
+    margin: auto;
+}
+.form-item input{
+    width: 240px;
+    height: 28px;
+    font-size: 16px;
+    outline: none;
+}
+.form-item .tips{
+    font-size: 8px;
+    color: red;
+}
+.form-item .verifyCode{
+    width: 100px;
+    float: left;
+}
+.form-item .verifyImg{
+    float: right;
+    padding-right: 2px;
+}
+.reg-bar{
+    width: 400px;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    background-color: lightgray;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    position: absolute;
+    bottom: 0;
+}
+a{
+    text-decoration: none;
+    line-height: 40px;
+}
+a, a:hover, a:link, a:visited{
+    color: black;
+}
+
+button{
+    width: 40%;
+    height: 40px;
+    cursor: pointer;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    margin: 5px 10px;
+    color: #ffffff;
+    background-color: sandybrown;
+}
+
+

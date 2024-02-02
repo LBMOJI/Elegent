@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/personal.css">
+    <link rel="stylesheet" href="/css/user/compensate.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content">
+    <div class="sidemenu">
+        <div class="firstPage">
+            <a th:href="@{/user/toPersonal}">个人中心首页</a>
+        </div>
+        <ul>
+            <li><a href="javascript:void(0);" class="one_level_menubar">个人信息</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getInformation}">资料设置</a></li>
+                    <li>
+                        <form th:action="@{/user/cancellate}" id="cancellate" method="post">
+                            <a href="javascript:void(0);" onclick="showPopup()">账号注销</a>
+                            <div id="overlay">
+                                <div class="popup">
+                                    <p class="popup_title">提示</p>
+                                    <p class="popup_content">是否确认注销账号</p>
+                                    <div class="popup_btn">
+                                        <button class="cancelBtn" type="button" onclick="hidePopup()">取消</button>
+                                        <button class="confirmBtn" type="submit">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的订单</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getRecord}">保险订单</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar" id="my">我的理赔</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getAcception}">理赔进度</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="one_level_menubar">我的资产</a>
+                <ul class="two_level_menubar">
+                    <li><a th:href="@{/user/getUserCarList}">我的车辆</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="acceptionList">
+        <div th:if="${AList}" style="height: 500px">
+            <div th:each="acception,status : ${AList}" class="acception">
+                <div>
+                    <span>保险单号：</span><span th:text="${acception.getId()}"></span><br>
+                    <span>保险名称：</span><span th:text="${acception.getBname()}"></span><br>
+                    <span>申请时间：</span><span th:text="${#dates.format(acception.getApplytime(),'yyyy-MM-dd HH:mm')}"></span><br>
+                    <span>被保险车辆：</span><span th:text="${acception.getCname()}"></span><br>
+                    <span>车牌号：</span><span th:text="${acception.getCph()}"></span><br>
+                    <span th:unless="${acception.getPayout()}">理赔状态：</span><span th:unless="${acception.getPayout()}" th:text="${acception.getStatus()}"></span>
+                    <span th:if="${acception.getPayout()}">赔付金额：</span><span th:if="${acception.getPayout()}" th:text="${acception.getPayout()}"></span><br>
+                    <span>负责人员：</span><span th:text="${acception.getSname()}"></span><br>
+                    <span>联系电话：</span><span th:text="${acception.getSphone()}"></span><br>
+                </div>
+                <img th:src="@{(${acception.getImg()})}" style="width: 200px;height: 200px">
+            </div>
+        </div>
+        <div class="page" th:if="${AList}">
+            当前第<span th:text="${page.pageNum}"></span>页,
+            总共<span th:text="${page.pages}"></span>页<br>
+            <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+            <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+            <a href="javascript:void(0);" th:text="下一页" th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+            <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/personal.js?v=1.0"></script>
+<script>
+    window.onload = function () {
+        let my = $("#my");
+        my.next().slideToggle();
+        my.parent().siblings().children("ul").slideUp();
+    }
+
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/user/getAcception?pageNum=" + pageNum;
+    }
+    function jumpPage2(pageNum,pages){
+        if (pageNum === 0){
+            pageNum = pages;
+        }
+        location.href = "/user/getAcception?pageNum=" + pageNum;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <style>
+        .content {
+            border-top: 1px sandybrown solid;
+            width: 1280px;
+            height: 570px;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+        }
+        .content .icon-div {
+            padding-top: 40px;
+            text-align: center;
+        }
+
+        .content .icon-div .icon-menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 0 5px 1px #999;
+            height: 200px;
+            background-color: white;
+        }
+
+        .content .icon-div .icon-menu li {
+            float: left;
+            width: 320px;
+            height: 200px;
+        }
+
+        .content .icon-div .icon-menu li img {
+            margin: auto;
+            width: 100px;
+            height: 100px;
+            padding-top: 40px;
+            display: block;
+        }
+        .content .icon-div .icon-menu li span{
+            font-size: 17px;
+        }
+    </style>
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content">
+    <img th:src="@{/img/ad2.jpg}" width="1280px" height="300px" style="padding-top: 10px">
+    <div class="icon-div">
+        <ul class="icon-menu">
+            <li>
+                <a href="javascript:void(0);" th:href="@{/user/getUserCarList}">
+                <img id="car" th:src="@{/img/car.png}">
+                <span>我的汽车</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" th:href="@{/getBaoXian}">
+                <img id="insurance" th:src="@{/img/insurance.png}">
+                <span>保险购买</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" th:href="@{/user/getRecord}">
+                <img id="orders" th:src="@{/img/orders.png}">
+                <span>查看订单</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" th:href="@{/toApply}">
+                <img id="claims" th:src="@{/img/Claims.png}">
+                <span>理赔查询</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+
+    $("#car").mouseenter(function () {
+       $(this).animate({width:"120px",height:"120px",margin:"auto"});
+    }).mouseleave(function (){
+        $(this).animate({width:"100px",height:"100px",margin:"auto"});
+    });
+
+    $("#insurance").mouseenter(function () {
+        $(this).animate({width:"120px",height:"120px",margin:"auto"});
+    }).mouseleave(function (){
+        $(this).animate({width:"100px",height:"100px",margin:"auto"});
+    });
+
+    $("#claims").mouseenter(function () {
+        $(this).animate({width:"120px",height:"120px",margin:"auto"});
+    }).mouseleave(function (){
+        $(this).animate({width:"100px",height:"100px",margin:"auto"});
+    });
+
+    $("#orders").mouseenter(function () {
+        $(this).animate({width:"120px",height:"120px",margin:"auto"});
+    }).mouseleave(function (){
+        $(this).animate({width:"100px",height:"100px",margin:"auto"});
+    });
+</script>
+</body>
+</html>

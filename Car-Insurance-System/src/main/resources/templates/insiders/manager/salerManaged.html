@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/admin/adminPublic.css">
+    <style>
+        #overlay {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        .popup {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 430px;
+            border-radius: 5px;
+            margin: 130px auto;
+            text-align: center;
+        }
+
+        .popup_title {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+            font-size: 18px;
+        }
+
+        .popup_content {
+            line-height: 40px;
+            padding: 15px 20px;
+        }
+
+        .popup_btn {
+            padding-bottom: 10px;
+        }
+
+        .popup_btn button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+
+        .overlay1, .overlay2 {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            /* IE9以下不支持rgba模式 */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* 兼容IE8及以下 */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f000000, endColorstr=#7f000000);
+            display: none;
+        }
+
+        /* 弹出框主体 */
+        .popup1 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 240px;
+            border-radius: 5px;
+            margin: 160px auto;
+            text-align: center;
+        }
+
+        .popup2 {
+            background-color: #ffffff;
+            max-width: 400px;
+            min-width: 200px;
+            height: 450px;
+            border-radius: 5px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        /* 弹出框的标题 */
+        .popup_title1, .popup_title2 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: solid 1px #cccccc;
+        }
+
+        /* 弹出框的内容 */
+        .popup_content1 {
+            height: 60px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+
+        .popup_content2 {
+            height: 280px;
+            line-height: 50px;
+            padding: 15px 20px;
+        }
+
+        .popup_content2 input {
+            font-size: 16px;
+        }
+
+        /* 弹出框的按钮栏 */
+        .popup_btn1, .popup_btn2 {
+            padding-bottom: 10px;
+        }
+
+        /* 弹出框的按钮 */
+        .popup_btn1 button, .popup_btn2 button {
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            border: solid 1px #cccccc;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: #ffffff;
+            background-color: black;
+        }
+
+        .normalTh, .normalTd {
+            width: 80px;
+        }
+
+        .longTd, .longTh {
+            width: 240px;
+        }
+
+        td {
+            height: 60px;
+            font-size: 15px;
+        }
+
+        th {
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>后台业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li>
+            <a href="javascript:void(0);" class="one">数据统计</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getDataPicture}">数据图表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">用户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getUserList}">用户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">保险管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getBaoxianList}">保险列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">订单管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getRecordList}">订单列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getAcceptionList}">理赔列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">车辆管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getCarList}">审核列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one" id="now">业务员管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getSalerList}">业务员列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/myself}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="content-head">
+        <div class="welcome">
+            <span>欢迎：</span>
+            <span th:text="${session.admin.getUsername()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/admin/logout}">退出</a>
+        </div>
+    </div>
+    <div class="content-banner">
+        <div class="banner-name">
+            <span>业务员列表</span>
+        </div>
+        <div class="banner-right">
+            <div class="banner-search">
+                <span>搜索：</span>
+                <input type="text" id="name" autocomplete="off" placeholder="请输入业务员姓名">
+            </div>
+            <div class="banner-add">
+                <a href="javascript:void(0);" onclick="showPopup()">添加</a>
+                <div id="overlay">
+                    <div class="popup">
+                        <form th:action="@{/admin/addSaler}" onsubmit="return check()" method="post">
+                            <p class="popup_title">添加业务员</p>
+                            <span id="addTips" style="font-size: 14px;height: 20px;display: block">
+                                请输入8位包含数字、字母、特殊符号的密码
+                            </span>
+                            <div class="popup_content">
+                                <div class="popup-item">
+                                    <input id="name2" name="name" type="text" autocomplete="off"
+                                           placeholder="姓名">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="pwd" name="pwd" type="text" autocomplete="off"
+                                           placeholder="登陆密码">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="sex" name="sex" type="text" autocomplete="off"
+                                           placeholder="性别">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="phone" name="phone" type="text" autocomplete="off"
+                                           placeholder="联系电话">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="email" name="email" type="text" autocomplete="off"
+                                           placeholder="联系邮箱">
+                                </div>
+                                <div class="popup-item">
+                                    <input id="address" name="address" type="text" autocomplete="off"
+                                           placeholder="居住地址">
+                                </div>
+                            </div>
+                            <div class="popup_btn">
+                                <button class="cancelBtn" type="button" onclick="hidePopup()">取消</button>
+                                <button class="confirmBtn" type="submit">确认</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <table>
+            <tr>
+                <th class="normalTh">序号</th>
+                <th class="normalTh">姓名</th>
+                <th class="normalTh">性别</th>
+                <th class="normalTh">登录密码</th>
+                <th class="longTh">联系电话</th>
+                <th class="longTh">联系邮箱</th>
+                <th class="longTh">居住地址</th>
+                <th class="normalTh">是否离职</th>
+                <th class="normalTh">操作</th>
+            </tr>
+            <tr th:each="saler : ${SList}" th:switch="${saler.getDemission()}">
+                <td class="normalTd" th:text="${saler.getId()}"></td>
+                <td class="normalTd" th:text="${saler.getName()}"></td>
+                <td class="normalTd" th:text="${saler.getSex()}"></td>
+                <td class="normalTd" th:text="${saler.getPwd()}"></td>
+                <td class="longTd" th:text="${saler.getPhone()}"></td>
+                <td class="longTd" th:text="${saler.getEmail()}"></td>
+                <td class="longTd" th:text="${saler.getAddress()}"></td>
+                <td class="normalTd" th:case="0">就职中</td>
+                <td class="normalTd" th:case="1">已离职</td>
+                <td class="longTd">
+                    <a href="javascript:void(0);" th:onclick="'showPopup2('+${saler.getId()}+')'">修改</a>&nbsp;&nbsp;
+                    <div th:id="'overlay-' + ${saler.getId()}" class="overlay2">
+                        <form th:action="@{/admin/updateSaler}" method="post" onsubmit="return check()">
+                            <div class="popup2">
+                                <p class="popup_title2">修改业务员信息</p>
+                                <div class="popup_content2">
+                                    <div class="popup-item">
+                                        <span>员工姓名</span>
+                                        <input type="text" name="name" th:value="${saler.getName()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>登陆密码</span>
+                                        <input type="text" name="pwd" th:value="${saler.getPwd()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>员工性别</span>
+                                        <input type="text" name="sex" th:value="${saler.getSex()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>联系电话</span>
+                                        <input type="number" name="phone" th:value="${saler.getPhone()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>联系邮箱</span>
+                                        <input type="text" name="email" th:value="${saler.getEmail()}">
+                                    </div>
+                                    <div class="popup-item">
+                                        <span>家庭住址</span>
+                                        <input type="text" name="address" th:value="${saler.getAddress()}">
+                                    </div>
+                                </div>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${saler.getId()}">
+                                </div>
+                                <div class="popup_btn2">
+                                    <button class="cancelBtn2" type="button"
+                                            th:onclick="'hidePopup2('+${saler.getId()}+')'">取消
+                                    </button>
+                                    <button class="confirmBtn2" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0);" th:onclick="'showPopup1('+${saler.getId()}+')'">删除</a>
+                    <div th:id="'overlay' + ${saler.getId()}" class="overlay1">
+                        <form th:action="@{/admin/deleteSaler}" method="post">
+                            <div class="popup1">
+                                <p class="popup_title1">提示</p>
+                                <p class="popup_content1">是否确认删除业务员信息</p>
+                                <div style="display: none">
+                                    <input type="text" name="id" th:value="${saler.getId()}">
+                                </div>
+                                <div class="popup_btn1">
+                                    <button class="cancelBtn1" type="button"
+                                            th:onclick="'hidePopup1('+${saler.getId()}+')'">取消
+                                    </button>
+                                    <button class="confirmBtn1" type="submit">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="page" th:if="${SList.size() gt 0}">
+        当前第<span th:text="${page.pageNum}"></span>页,
+        总共<span th:text="${page.pages}"></span>页<br>
+        <a href="javascript:void(0);" th:text="首页" th:onclick="'jumpPage('+1+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="上一页" th:onclick="'jumpPage('+${page.prePage}+')'"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="下一页"
+           th:onclick="jumpPage2([[${page.nextPage}]],[[${page.getPages()}]])"></a>&nbsp;
+        <a href="javascript:void(0);" th:text="尾页" th:onclick="'jumpPage('+${page.getPages()}+')'"></a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/manager.js"></script>
+<script>
+    function jumpPage(pageNum) {
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+        location.href = "/admin/getSalerList?pageNum=" + pageNum;
+    }
+
+    function jumpPage2(pageNum, pages) {
+        if (pageNum === 0) {
+            pageNum = pages;
+        }
+        location.href = "/admin/getSalerList?pageNum=" + pageNum;
+    }
+
+    function check() {
+        let name = $('#name').val();
+        let nReg = /^[\u4e00-\u9fa5]{2,4}$/;
+        let pwd = $('#pwd').val();
+        let pReg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+<>?:"{},.\/\\;'[\]])[A-Za-z\d`~!@#$%^&*()_+<>?:"{},.\/\\;'[\]]{8,}$/;
+        let sex = $('#sex').val();
+        let phone = $('#phone').val();
+        let phoneReg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+        let email = $('#email').val();
+        let emailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (!nReg.test(name)) {
+            $('#addTips').text("请输入正确的姓名");
+            return false;
+        }
+        if (!pReg.test(pwd)) {
+            $('#addTips').text("请输入8位包含数字、字母、特殊符号的密码");
+            return false;
+        }
+        if (sex != "男" || sex != "女"){
+            $('#addTips').text("请输入正确的性别");
+            return false;
+        }
+        if (!phoneReg.test(phone)){
+            $('#addTips').text("请输入正确的手机号");
+            return false;
+        }
+        if (!emailReg.test(email)){
+            $('#addTips').text("请输入正确的邮箱");
+            return false;
+        }
+        return true;
+    }
+
+
+</script>
+</body>
+</html>

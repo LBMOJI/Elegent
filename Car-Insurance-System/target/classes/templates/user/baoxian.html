@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/baoxian.css">
+    <style>
+        table {
+            margin: auto;
+        }
+
+        table, td {
+            border: 1px black solid;
+            border-collapse: collapse;
+        }
+
+        input {
+            border: 0;
+            outline: none;
+        }
+
+        select {
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="baoXian">
+    <ul class="baoXianMenu">
+        <li id="third"><a href="javascript:void(0);">第三者责任险</a></li>
+        <li id="loss"><a href="javascript:void(0);">车辆损失险</a></li>
+        <li id="driver"><a href="javascript:void(0);">车上人员险-司机</a></li>
+        <li id="passenger"><a href="javascript:void(0);">车上人员险-乘客</a></li>
+        <li id="robbery"><a href="javascript:void(0);">机动车盗抢险</a></li>
+        <li id="scratches"><a href="javascript:void(0);">车身划痕损失险</a></li>
+        <li id="wheels"><a href="javascript:void(0);">车轮单独损失险</a></li>
+        <li id="timeCosts"><a href="javascript:void(0);">修理期间费用损失险</a></li>
+    </ul>
+    <div th:each="baoxian : ${BList}" th:id="'baoxian' + ${baoxian.getId()}"
+         th:class="'baoXianView' + ${baoxian.getId()}">
+        <div th:id="'detail' + ${baoxian.getId()}" class="detail">
+            <div class="bxDetail">
+                <h2 th:text="${baoxian.getBname()}" style="margin: 0;"></h2><br>
+                <h3 style="margin: 0;">保什么：</h3><span th:text="${baoxian.getDetail()}"></span><br>
+            </div>
+            <div class="bxBtn">
+                <form th:action="@{/user/toAddRecord}" method="post">
+                    <input type="number" style="display: none" th:value="${baoxian.getId()}" name="id">
+                    <button type="submit" style="margin-top: 135px">办理</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    let view1 = $("#baoxian1");
+    let view2 = $("#baoxian2");
+    let view3 = $("#baoxian3");
+    let view4 = $("#baoxian4");
+    let view5 = $("#baoxian5");
+    let view6 = $("#baoxian6");
+    let view7 = $("#baoxian7");
+    let view8 = $("#baoxian8");
+
+    window.onload = function () {
+        $("#third").mouseover(function () {
+            view1.css('display', 'block');
+            view2.css('display', 'none');
+            view3.css('display', 'none');
+            view4.css('display', 'none');
+            view5.css('display', 'none');
+            view6.css('display', 'none');
+            view7.css('display', 'none');
+            view8.css('display', 'none');
+        });
+    }
+    $("#third").mouseover(function () {
+        view1.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    });
+    $("#loss").mouseover(function () {
+        view2.css('display', 'block');
+        view1.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    });
+    $("#driver").mouseover(function () {
+        view3.css('display', 'block');
+        view2.css('display', 'none');
+        view1.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    });
+    $("#passenger").mouseover(function () {
+        view4.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view1.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    });
+    $("#robbery").mouseover(function () {
+        view5.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view1.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    });
+    $("#scratches").mouseover(function () {
+        view6.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view1.css('display', 'none');
+        view7.css('display', 'none');
+        view8.css('display', 'none');
+    })
+    $("#wheels").mouseover(function () {
+        view7.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view1.css('display', 'none');
+        view8.css('display', 'none');
+    })
+    $("#timeCosts").mouseover(function () {
+        view8.css('display', 'block');
+        view2.css('display', 'none');
+        view3.css('display', 'none');
+        view4.css('display', 'none');
+        view5.css('display', 'none');
+        view6.css('display', 'none');
+        view7.css('display', 'none');
+        view1.css('display', 'none');
+    })
+</script>
+</body>
+</html>

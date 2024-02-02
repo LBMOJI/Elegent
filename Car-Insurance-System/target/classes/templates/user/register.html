@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/user/register.css">
+</head>
+<body>
+<div class="registerBox">
+    <div class="logo">
+        <span>注册</span>
+    </div>
+    <div class="errorMsg">
+        <span th:if="${errorMsg}" th:text="${errorMsg}"></span>
+        <span th:unless="${errorMsg}" id="errorMsg"></span>
+    </div>
+    <form th:action="@{/userRegister}" method="post" onsubmit="return check()">
+        <div class="form-item">
+            <input id="name" name="name" type="text" autocomplete="off" placeholder="姓名">
+        </div>
+        <div class="form-item">
+            <input id="cno" name="cno" type="text" autocomplete="off" placeholder="身份证号">
+        </div>
+        <div class="form-item">
+            <input id="pwd" name="pwd" type="password" autocomplete="off" placeholder="请输入8位包含数字、字母、特殊符号组成的密码">
+        </div>
+        <div class="form-item">
+            <input id="password2" name="password2" type="password" autocomplete="off" placeholder="重复密码">
+        </div>
+        <div class="form-item">
+            <select id="sex" name="sex" autocomplete="off">
+                <option value="-">请选择性别</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
+        </div>
+        <div class="form-item">
+            <input id="phone" name="phone" type="text" autocomplete="off" placeholder="联系电话">
+        </div>
+        <div class="form-item">
+            <input id="email" name="email" type="text" autocomplete="off" placeholder="电子邮箱">
+        </div>
+        <div class="form-item" style="display: flex;">
+            <button type="submit">注册</button>
+            <button type="button" onclick="javascript:window.history.back(-1);">返回</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    function check() {
+        let name = $('#name').val();
+        let nReg = /^[\u4e00-\u9fa5]{2,4}$/;
+        let cno = $('#cno').val();
+        let cReg =  /^[1-9]\d{5}(19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+        let pwd = $('#pwd').val();
+        let password = $('#password2').val();
+        let pReg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+<>?:"{},.\/\\;'[\]])[A-Za-z\d`~!@#$%^&*()_+<>?:"{},.\/\\;'[\]]{8,}$/;
+        let sex = $('#sex').val();
+        let phone = $('#phone').val();
+        let phoneReg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+        let email = $('#email').val();
+        let emailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (!nReg.test(name)){
+            $('#errorMsg').text("请输入正确的姓名");
+            return false;
+        }
+        if (!cReg.test(cno)){
+            $('#errorMsg').text("请输入正确的身份证号");
+            return false;
+        }
+        if (!pReg.test(pwd)){
+            $('#errorMsg').text("请输入8位包含数字、字母、特殊字符的密码");
+            return false;
+        }
+        if (password !== pwd){
+            $('#errorMsg').text("请输入相同的密码");
+            return false;
+        }
+        if (sex === "-"){
+            $('#errorMsg').text("请选择性别");
+            return false;
+        }
+        if (!phoneReg.test(phone)){
+            $('#errorMsg').text("请输入正确的手机号");
+            return false;
+        }
+        if (!emailReg.test(email)){
+            $('#errorMsg').text("请输入正确的电子邮箱");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

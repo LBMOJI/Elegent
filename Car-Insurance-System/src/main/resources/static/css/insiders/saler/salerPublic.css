@@ -1,0 +1,117 @@
+@charset "utf-8";
+a {
+    text-decoration: none;
+}
+
+a, a:hover, a:link, a:visited {
+    color: black;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu {
+    width: 200px;
+    height: 713px;
+    text-align: center;
+    background-color: black;
+    overflow: auto;
+    float: left;
+}
+
+.menu .menuHead {
+    margin-top: 10px;
+    height: 30px;
+}
+
+.menu .menuHead span {
+    line-height: 30px;
+    color: gray;
+}
+
+.menu .menuOne {
+    margin-top: 10px;
+}
+
+.menu .menuOne li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.menu .menuOne li a {
+    font-size: 18px;
+    line-height: 40px;
+    color: white;
+}
+
+.menuTwo {
+    display: none;
+    height: 40px;
+}
+
+.menu .menuOne li .menuTwo li a {
+    font-size: 16px;
+    line-height: 40px;
+    color: white;
+}
+
+.content {
+    float: right;
+    width: 1300px;
+    padding-right: 2px;
+}
+
+.content .head {
+    height: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content .head .welcome {
+    width: 140px;
+    float: right;
+}
+
+.content .head .logout {
+    float: right;
+    margin-right: 70px;
+}
+
+.content .workSpace {
+    padding-top: 30px;
+    width: 1300px;
+    border-top: 1px gray solid;
+}
+
+.content .workSpace .workSpaceName{
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline;
+}
+
+.content .workSpace .workSpaceRight {
+    width: 250px;
+    display: inline;
+    float: right;
+    padding-right: 160px;
+}
+
+table {
+    text-align: center;
+    border-top: 1px gray solid;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.content .workSpace .workSpaceRight input {
+    font-size: 15px;
+}
+
+.page {
+    text-align: center;
+    margin-top: 10px;
+}

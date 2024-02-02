@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/insiders/admin/adminPublic.css">
+</head>
+<body>
+<div class="menu">
+    <div class="menuHead">
+        <span>后台业务窗口</span>
+    </div>
+    <ul class="menuOne">
+        <li>
+            <a href="javascript:void(0);" class="one" id="now">数据统计</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getDataPicture}">数据图表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">用户管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getUserList}">用户列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">保险管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getBaoxianList}">保险列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">订单管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getRecordList}">订单列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">理赔管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getAcceptionList}">理赔列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">车辆管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getCarList}">审核列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">业务员管理</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/getSalerList}">业务员列表</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="one">个人信息</a>
+            <ul class="menuTwo">
+                <li><a th:href="@{/admin/myself}">我的信息</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <div class="content-head">
+        <div class="welcome">
+            <span>欢迎：</span>
+            <span th:text="${session.admin.getUsername()}"></span>
+        </div>
+        <div class="logout">
+            <a th:href="@{/admin/logout}">退出</a>
+        </div>
+    </div>
+    <div class="content-banner">
+        <div class="banner-name">
+            <span>数据统计</span>
+        </div>
+        <div class="banner-right">
+            <div class="banner-search">
+<!--                <span>搜索：</span>-->
+<!--                <input type="number" id="uid" min="1" autocomplete="off" placeholder="请输入用户账号">-->
+            </div>
+            <div class="banner-add">
+<!--                <a href="javascript:void(0);" onclick="showPopup()">添加</a>-->
+            </div>
+        </div>
+    </div>
+    <div class="picture">
+        <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+        <div class="eachData" style="border-bottom: 1px gray solid;padding-bottom: 10px;">
+            <p style="float: left;margin-left: 20px;">保险销量</p>
+            <div id="container" style="height: 300px;width: 100%"></div>
+            <script type="text/javascript">
+                var dom = document.getElementById('container');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
+                });
+                var app = {};
+
+                var option;
+
+                option = {
+                    dataset: [
+                        {
+                            dimensions: ['name', 'score'],
+                            source: [
+                                ['第三者责任险', [[${result.getInsurance1()}]]],
+                                ['机动车辆损失险', [[${result.getInsurance2()}]]],
+                                ['车上人员险-司机', [[${result.getInsurance3()}]]],
+                                ['车上人员险-乘客', [[${result.getInsurance4()}]]],
+                                ['机动车盗抢险', [[${result.getInsurance5()}]]],
+                                ['车身划痕损失险', [[${result.getInsurance6()}]]],
+                                ['车轮单独损失险', [[${result.getInsurance7()}]]],
+                                ['修理期间费用补偿险', [[${result.getInsurance8()}]]]
+                            ]
+                        },
+                        {
+                            transform: {
+                                type: 'sort',
+                                config: {dimension: 'score', order: 'desc'}
+                            }
+                        }
+                    ],
+                    xAxis: {
+                        type: 'category',
+                        axisLabel: {interval: 0, rotate: 30}
+                    },
+                    yAxis: {},
+                    series: {
+                        type: 'bar',
+                        encode: {x: 'name', y: 'score'},
+                        datasetIndex: 1
+                    }
+                };
+
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
+
+                window.addEventListener('resize', myChart.resize);
+            </script>
+        </div>
+        <div class="monthData">
+            <p style="float: left;margin-left: 20px;">每月销量</p>
+            <div id="container3" style="height: 300px;width: 100%"></div>
+            <script type="text/javascript">
+                var dom = document.getElementById('container3');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
+                });
+                var app = {};
+
+                var option;
+
+                var Jan = [[${month.Jan}]];
+                var Feb = [[${month.Feb}]];
+                var Mar = [[${month.Mar}]];
+                var Apr = [[${month.Apr}]];
+                var May = [[${month.May}]];
+                var June = [[${month.June}]];
+                var July = [[${month.July}]];
+                var Aug = [[${month.Aug}]];
+                var Sept = [[${month.Sept}]];
+                var Oct = [[${month.Oct}]];
+                var Nov = [[${month.Nov}]];
+                var Dec = [[${month.Dec}]];
+
+                option = {
+                    xAxis: {
+                        type: 'category',
+                        data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: [Jan, Feb, Mar, Apr, May, June, July, Aug, Sept, Oct, Nov, Dec],
+                            type: 'line'
+                        }
+                    ]
+                };
+
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
+
+                window.addEventListener('resize', myChart.resize);
+            </script>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/manager.js"></script>
+</body>
+</html>

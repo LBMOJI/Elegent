@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/baoxian.css">
+    <style>
+        table {
+            margin: auto;
+        }
+
+        table, td {
+            border: 1px black solid;
+            border-collapse: collapse;
+        }
+
+        td {
+            height: 30px;
+        }
+
+        input {
+            border: 0;
+            outline: none;
+        }
+
+        select {
+            border: 0;
+        }
+        #addForm{
+            width: 800px;
+            height: 500px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        .addTip{
+            height: 30px;
+            line-height: 30px;
+            color: red;
+            text-align: center;
+        }
+        .table1{
+            width: 680px;
+            text-align: center;
+        }
+        .table2{
+            margin-top: 30px;
+            width: 800px;
+            height: 40px;
+            text-align: center;
+        }
+        input{
+            background: transparent;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+        select{
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="baoXian">
+    <form th:action="@{/user/addRecord}" id="addForm" name="addForm" method="post">
+        <div class="addTip">
+            <span class="tips"></span>
+        </div>
+        <table class="table1">
+            <tr>
+                <td rowspan="3">个人信息</td>
+                <td>姓名</td>
+                <td style="width: 180px" th:if="${session.user}" th:text="${session.user.getName()}"></td>
+                <td th:unless="${session.user}"></td>
+                <td rowspan="3">车辆信息</td>
+                <td>投保车辆</td>
+                <td><input type="text" name="cph" id="cph"></td>
+            </tr>
+            <tr>
+                <td>证件号</td>
+                <td style="width: 180px" th:if="${session.user}" th:text="${session.user.getCno()}"></td>
+                <td th:unless="${session.user}">441702200104082216</td>
+                <td>车辆类型</td>
+                <td><input type="text" name="type" id="type"></td>
+            </tr>
+            <tr>
+                <td>电话</td>
+                <td style="width: 180px;" th:if="${session.user}" th:text="${session.user.getPhone()}"></td>
+                <td th:unless="${session.user}"></td>
+                <td style="width: 100px">购置价</td>
+                <td id="price" style="width: 100px"></td>
+            </tr>
+        </table>
+        <input type="number" style="display: none" name="bid" id="bid" th:value="${baoxian.getId()}">
+        <table class="table2">
+            <tr>
+                <td style="width: 200px">保险名称</td>
+                <td style="width: 100px">保额</td>
+                <td style="width: 100px">保费</td>
+                <td th:if="${baoxian.getId() == 2 || baoxian.getId() == 5}" style="width: 100px">计算保费</td>
+            </tr>
+            <tr th:switch="${baoxian.getId()}">
+                <td th:text="${baoxian.getBname()}" style="width: 200px"></td>
+                <td th:case="1">
+                    <select name="amount" id="amount1">
+                        <option value="50000">5万</option>
+                        <option value="100000">10万</option>
+                        <option value="150000">15万</option>
+                        <option value="200000">20万</option>
+                        <option value="300000">30万</option>
+                        <option value="500000">50万</option>
+                        <option value="1000000">100万</option>
+                        <option value="1500000">150万</option>
+                        <option value="2000000">200万</option>
+                    </select>
+                </td>
+                <td th:case="3">
+                    <select name="amount" id="amount3">
+                        <option value="10000">1万</option>
+                        <option value="20000">2万</option>
+                        <option value="30000">3万</option>
+                        <option value="40000">4万</option>
+                        <option value="50000">5万</option>
+                    </select>
+                </td>
+                <td th:case="4">
+                    <select name="amount" id="amount4">
+                        <option value="10000">1万</option>
+                        <option value="20000">2万</option>
+                        <option value="30000">3万</option>
+                        <option value="40000">4万</option>
+                        <option value="50000">5万</option>
+                    </select>
+                    &nbsp;x&nbsp;
+                    <input style="background: white;width: 80px" type="number" name="count" id="count" min="1" max="39">
+                </td>
+                <td th:if="${baoxian.getId() == 2 || baoxian.getId() == 5}" style="width: 100px">
+                    <input type="number" name="amount" id="amount" readonly="readonly">
+                </td>
+                <td th:case="6">
+                    <select name="amount" id="amount6">
+                        <option value="2000">2千</option>
+                        <option value="5000">5千</option>
+                        <option value="10000">1万</option>
+                        <option value="20000">2万</option>
+                    </select>
+                </td>
+                <td th:case="7"><input type="number" name="amount" id="amount7" value="1200" readonly="readonly"></td>
+                <td th:case="8">
+                    <select name="amount" id="amount8">
+                        <option value="700">100元/天*7天</option>
+                        <option value="1400">200元/天*7天</option>
+                        <option value="500">100元/天*5天</option>
+                        <option value="1000">200元/天*5天</option>
+                    </select>
+                </td>
+                <td style="width: 100px"><input type="number" name="cost" id="cost" readonly="readonly"></td>
+                <td th:if="${baoxian.getId() == 2 || baoxian.getId() == 5}">
+                    <button type="button" th:onclick="compute([[${baoxian.getId()}]])" style="width: 80%">计算</button>
+                </td>
+            </tr>
+        </table>
+        <div class="form-item" id="form-item-btn">
+            <button type="submit">办理</button>
+            <button type="button" onclick="javascript:history.back(-1);reset();">返回</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function (){
+        var bid = $('#bid').val();
+        if (bid == 1){
+            $('#cost').val(415);
+        }
+        if (bid == 3){
+            $('#cost').val(40);
+        }
+        if (bid == 4){
+            $('#count').val(1);
+            $('#cost').val(25);
+        }
+        if (bid == 6){
+            $('#cost').val(400);
+        }
+        if (bid == 7){
+            $('#cost').val(50);
+        }
+        if (bid == 8){
+            $('#cost').val(105);
+        }
+    });
+    function check() {
+        let cph = document.getElementById("cph").value;
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let type = document.getElementById("type").value;
+        if (cph == ""){
+            $('.tips').text("请输入投保车辆车牌号");
+            return false;
+        }
+        if (!cphReg.test(cph)) {
+            $('.tips').text("请检查输入的车牌号");
+            return false;
+        }
+        if (type == "") {
+            $('.tips').text("请输入汽车类型");
+            return false;
+        }
+        return true;
+    }
+
+    $("#amount1").change(function () {
+        let amount = $("#amount1").val();
+        $('#cost').val(amount * 0.0083)
+    });
+
+    $("#amount3").change(function () {
+        let amount = $("#amount3").val();
+        $('#cost').val(amount / 250)
+    });
+
+    $("#amount4").change(function () {
+        let amount = $("#amount4").val();
+        let count = $('#count').val();
+        var per = amount / 400;
+        $('#cost').val(per * count)
+    });
+
+    $('#count').change(function () {
+        let amount = $("#amount4").val();
+        let count = $('#count').val();
+        var per = amount / 400;
+        $('#cost').val(per * count)
+    })
+
+    $("#amount6").change(function () {
+        let amount = $("#amount6").val();
+        if (amount == 2000) {
+            $('#cost').val(amount * 0.2);
+        }
+        if (amount == 5000) {
+            $('#cost').val(amount * 0.114);
+        }
+        if (amount == 10000) {
+            $('#cost').val(amount * 0.076);
+        }
+        if (amount == 20000) {
+            $('#cost').val(amount * 0.057);
+        }
+    });
+
+    $("#amount7").change(function () {
+        let amount = $("#amount7").val();
+        $('#cost').val(amount * 0.15);
+    });
+
+    $("#amount8").change(function () {
+        let amount = $("#amount8").val();
+        if (amount == 700 || amount == 500) {
+            $('#cost').val(amount * 0.15);
+        }
+        if (amount == 1000){
+            $('#cost').val(amount * 0.12);
+        }
+        if (amount == 1400) {
+            $('#cost').val(amount * 0.1);
+        }
+    });
+
+    $('#addForm').submit(function (event){
+        event.preventDefault();
+        let form = $(this);
+        if (check()) {
+            if ($('#cost').val() == "") {
+                $('.tips').text("未计算保费");
+                return false;
+            }
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "text",
+                async: false,
+                success: function (res) {
+                    if (res !== "") {
+                        $('.tips').text(res);
+                    } else {
+                        location.href = "/user/getRecord";
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    });
+
+    function compute() {
+        if (check()) {
+            let cph = document.getElementById("cph").value;
+            let type = document.getElementById("type").value;
+            var formData = new FormData();
+            formData.append("cph", cph);
+            formData.append("type", type);
+            $.ajax({
+                type: "get",
+                url: "/user/recordCompute",
+                data: "cph=" + cph + "&type=" + type,
+                dataType: "text",
+                success: function (res) {
+                    if (res == ""){
+                        $('.tips').text("车辆未上传或审核中，请检查您上传的信息后重新购买");
+                        $('#price').text("");
+                        $('#amount').val("");
+                        $('#cost').val("");
+                    }else {
+                        $('.tips').text("")
+                        $('#price').text(res);
+                        $('#amount').val(res * 0.87);
+                        $('#cost').val(4000 * 0.12);
+                    }
+                },
+                processData: false,
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/user/apply.css">
+</head>
+<body>
+<div class="home_div">
+    <div class="home_left">
+        <a th:href="@{/index}">
+            <img src="/img/home.png" width="20.8px" height="20.8px">
+            <span>首页</span>
+        </a>
+    </div>
+    <div class="home_right" th:unless="${session.user}">
+        <a th:href="@{/userToLogin}" style="margin-right: 25px;margin-left: 20px">登录</a>
+        <a th:href="@{/userToRegister}">注册</a>
+    </div>
+    <div class="home_right" th:if="${session.user}">
+        <div class="avatar">
+            <img src="/img/avatar.png" width="20px" height="20px">
+        </div>
+        <div class="welcome">
+            <span th:text="${session.user.getId()}"></span>
+        </div>
+        <div class="logOut">
+            <a th:href="@{/user/LogOut}">退出</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <a th:href="@{/user/toPersonal}">个人中心</a>
+        <div class="dropdown-content">
+            <a th:href="@{/user/getRecord}">保险订单</a>
+            <a th:href="@{/user/getUserCarList}">我的资产</a>
+            <a th:href="@{/user/getAcception}">我的理赔</a>
+            <a th:href="@{/user/getInformation}">个人信息</a>
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <div class="bannerLogo">
+        <img src="/img/icon.jpg" width="172.8px" height="97.2px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>一二车险</span>
+    </div>
+    <ul class="bannerMenu">
+        <li><a th:href="@{/index}">首页</a></li>
+        <li><a th:href="@{/getBaoXian}">保险</a></li>
+        <li><a th:href="@{/toApply}">理赔中心</a></li>
+    </ul>
+    <div class="search">
+        <img src="/img/banner-right.jpg" width="300px" height="65px">
+    </div>
+</div>
+<div class="content">
+    <div class="content-space">
+        <ul class="formMenu">
+            <li id="getCph" class="getCph"><a href="javascript:void(0);" onclick="getByCph()">车牌号</a></li>
+            <li id="getCno" class="getCno"><a href="javascript:void(0);" onclick="getByCno()">证件号</a></li>
+        </ul>
+        <div class="hidden">
+            <span id="tips"></span>
+            <span id="applyError" th:if="${applyError}" th:text="${applyError}"></span>
+        </div>
+        <form id="byCph" class="byCph" th:action="@{/byCph}" method="post" onsubmit="return checkByCph()">
+            <div class="form-item">
+                <input id="cph" name="cph" type="text" autocomplete="off" placeholder="请输入车牌号">
+            </div>
+            <div class="form-item">
+                <input id="phone" name="phone" type="text" autocomplete="off" placeholder="请输入手机号">
+            </div>
+            <div class="form-item">
+                <input id="id" name="id" type="text" autocomplete="off" placeholder="请输入保单号">
+            </div>
+            <div class="form-item">
+                <input id="verifyCode" name="verifyCode" type="text" autocomplete="off" placeholder="请输入验证码">
+            </div>
+            <div class="form-item" style="text-align: center">
+                <img th:src="@{/defaultKaptcha}" onclick="this.src='defaultKaptcha'" alt="单击图片刷新" width="120"
+                     height="30">
+            </div>
+            <div class="form-item" style="display: flex;align-items: center;justify-content: center;">
+                <button type="submit">查询</button>
+            </div>
+        </form>
+        <form id="byCno" class="byCno" th:action="@{/byCno}" method="post" onsubmit="return checkByCno()">
+            <div class="form-item">
+                <input id="id2" name="id" type="text" autocomplete="off" placeholder="请输入保单号">
+            </div>
+            <div class="form-item">
+                <input id="person" name="person" type="text" autocomplete="off" placeholder="请输入保险人姓名">
+            </div>
+            <div class="form-item">
+                <input id="cno" name="cno" type="text" autocomplete="off" placeholder="请输入保险人证件号">
+            </div>
+            <div class="form-item">
+                <input id="verifyCode2" name="verifyCode" type="text" autocomplete="off" placeholder="请输入验证码">
+            </div>
+            <div class="form-item" style="text-align: center">
+                <img th:src="@{/defaultKaptcha}" onclick="this.src='defaultKaptcha'" alt="单击图片刷新" width="120"
+                     height="30">
+            </div>
+            <div class="form-item" style="display: flex;align-items: center;justify-content: center;">
+                <button type="submit">查询</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    function getByCph() {
+        $("#byCno").css('display', 'none');
+        $("#byCph").css('display', 'block');
+        $("#getCph").css('border-bottom', '1px solid sandybrown');
+        $("#getCno").css('border', 'none');
+        $('#tips').text("");
+        $('#applyError').text("");
+    }
+
+    function getByCno() {
+        $("#byCph").css('display', 'none');
+        $("#byCno").css('display', 'block');
+        $("#getCno").css('border-bottom', '1px solid sandybrown');
+        $("#getCph").css('border', 'none');
+        $('#tips').text("");
+        $('#applyError').text("");
+    }
+
+    function checkByCph() {
+        $('#applyError').text("");
+        let cph = $('#cph').val();
+        let cphReg = /^([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[a-zA-Z](([DF]((?![IO])[a-zA-Z0-9](?![IO]))[0-9]{4})|([0-9]{5}[DF]))|[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1})$/;
+        let phone = $('#phone').val();
+        let phoneReg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+        let id = $('#id').val();
+        let verifyCode = $('#verifyCode').val();
+        if (!cphReg.test(cph)){
+            $('#tips').text("请检查输入的车牌号");
+            return false;
+        }
+        if (!phoneReg.test(phone)){
+            $('#tips').text("请检查输入的手机号");
+            return false;
+        }
+        if (id === ""){
+            $('#tips').text("请输入保单号");
+            return false;
+        }
+        if (verifyCode === ""){
+            $('#tips').text("请输入验证码");
+            return false;
+        }
+        return true;
+    }
+
+    function checkByCno(){
+        $('#applyError').text("");
+        let cno = $('#cno').val();
+        let cReg =  /^[1-9]\d{5}(19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+        let person = $('#person').val();
+        let nReg = /^[\u4e00-\u9fa5]{2,4}$/;
+        let id = $('#id2').val();
+        let verifyCode = $('#verifyCode2').val()
+        if (!cReg.test(cno)){
+            $('#tips').text("请检查输入的证件号");
+            return false;
+        }
+        if (!nReg.test(person)){
+            $('#tips').text("请检查输入的保险人姓名");
+            return false;
+        }
+        if (id === ""){
+            $('#tips').text("请输入保单号");
+            return false;
+        }
+        if (verifyCode === ""){
+            $('#tips').text("请输入验证码");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

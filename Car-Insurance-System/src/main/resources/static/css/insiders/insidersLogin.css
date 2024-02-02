@@ -1,0 +1,75 @@
+@charset "utf-8";
+body{
+    background-image: url("../../img/background.png");
+    background-size: 100%;
+}
+a{
+    text-decoration: none;
+}
+a, a:hover, a:link, a:visited {
+    color: black;
+}
+.loginBox{
+    width: 260px;
+    height: 280px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 160px;
+    background-color: white;
+    border-radius: 15px;
+}
+ul{
+    list-style-type: none;
+    width: 204px;
+    height: 30px;
+    padding: 0;
+    margin: 16px 30px 0 30px;
+}
+ul li{
+    float: left;
+    width: 100px;
+    text-align: center;
+}
+ul li a{
+    line-height: 30px;
+    vertical-align: middle;
+}
+.loginBox .adminForm,.loginBox .salerForm{
+    width: 200px;
+    margin: auto;
+}
+.loginBox .adminForm{
+    display: none;
+}
+.loginBox .adminForm .form-item,.loginBox .salerForm .form-item{
+    width: 200px;
+    height: 40px;
+    margin: auto;
+}
+input{
+    font-size: 15px;
+    margin: auto;
+}
+.form-item-errorMsg{
+    height: 20px;
+    text-align: center;
+}
+button{
+    width: 40%;
+    height: 40px;
+    cursor: pointer;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    margin: 5px 10px;
+    color: #ffffff;
+    background-color: black;
+}
+.errorMsg{
+    font-size: 13px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    color: red;
+}
